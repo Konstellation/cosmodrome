@@ -1,4 +1,4 @@
-package utils
+package common
 
 import (
 	"encoding/json"
@@ -30,7 +30,6 @@ func NewPrintInfo(moniker, chainID, nodeID, genTxsDir string,
 }
 
 func DisplayInfo(cdc *codec.Codec, info PrintInfo) error {
-	fmt.Println()
 	out, err := codec.MarshalJSONIndent(cdc, info)
 	if err != nil {
 		return err

@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	common2 "github.com/konstellation/cosmodrome/common"
 	"os"
 	"path/filepath"
 	"sort"
@@ -30,8 +31,9 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
+	//"github.com/konstellation/cosmodrome/common"
+	"github.com/konstellation/kn-sdk/common/utils"
 	"github.com/konstellation/kn-sdk/types"
-	"github.com/konstellation/konstellation/common/utils"
 )
 
 var (
@@ -72,7 +74,7 @@ necessary files (private validator, genesis, config, etc.).
 Note, strict routability for addresses is turned off in the config file.
 
 Example:
-	konstellation localnet --output-dir ./output --starting-ip-address 192.168.10.2
+	cosmodrome localnet --output-dir ./output --starting-ip-address 192.168.10.2
 	`,
 		RunE: func(_ *cobra.Command, _ []string) error {
 			config := ctx.Config
@@ -295,8 +297,8 @@ func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus types.GenesisUp
 			return err
 		}
 
-		toPrint := utils.NewPrintInfo(node.Moniker, chainID, node.ID, "", appState)
-		if err := utils.DisplayInfo(cdc, toPrint); err != nil {
+		toPrint := common2.NewPrintInfo(node.Moniker, chainID, node.ID, "", appState)
+		if err := common2.DisplayInfo(cdc, toPrint); err != nil {
 			return err
 		}
 	}

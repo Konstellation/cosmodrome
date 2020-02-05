@@ -28,7 +28,7 @@ function create() {
     sudo rm -rdf localnet
   fi
 
-  konstellation localnet --chain-id "$CHAIN_ID"
+  cosmodrome localnet --chain-id "$CHAIN_ID"
 }
 
 function run() {
