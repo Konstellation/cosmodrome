@@ -3,13 +3,11 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	common2 "github.com/konstellation/cosmodrome/common"
 	"os"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/konstellation/konstellation/crypto/keybase"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -31,8 +29,9 @@ import (
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
-	//"github.com/konstellation/cosmodrome/common"
+	common2 "github.com/konstellation/cosmodrome/common"
 	"github.com/konstellation/kn-sdk/common/utils"
+	"github.com/konstellation/kn-sdk/crypto/keybase"
 	"github.com/konstellation/kn-sdk/types"
 )
 
@@ -103,7 +102,7 @@ Example:
 				return err
 			}
 
-			accs, err := genAccounts(nodes)
+			accs, err := genAccounts(&nodes)
 			if err != nil {
 				return err
 			}
@@ -180,14 +179,12 @@ func configNode(config *cfg.Config, configFile *srvconfig.Config, info types.Nod
 	config.SetRoot(nodeDir)
 	config.Moniker = info.Name
 
-	err = os.MkdirAll(clientDir, nodeDirPerm)
-	if err != nil {
+	if err := os.MkdirAll(clientDir, nodeDirPerm); err != nil {
 		_ = os.RemoveAll(outDir)
 		return nil, err
 	}
 
-	err = os.MkdirAll(filepath.Join(nodeDir, "config"), nodeDirPerm)
-	if err != nil {
+	if err := os.MkdirAll(filepath.Join(nodeDir, "config"), nodeDirPerm); err != nil {
 		_ = os.RemoveAll(outDir)
 		return nil, err
 	}
@@ -237,22 +234,11 @@ func configNodes(config *cfg.Config, configFile *srvconfig.Config, nodesInfoFile
 	return
 }
 
-func genAccounts(nodes []*types.Node) (accs []*genaccounts.GenesisAccount, err error) {
-	for _, node := range nodes {
+func genAccounts(nodes *[]*types.Node) (accs []*genaccounts.GenesisAccount, err error) {
+	for i, node := range *nodes {
 		addr, secret, err := keybase.SaveCoinKey(node.Config.CliDir, node.Key.Name, node.Key.Password, node.Key.Mnemonic, true)
 		if err != nil {
 			_ = os.RemoveAll(outDir)
-			return nil, err
-		}
-
-		info := map[string]string{"secret": secret}
-		cliPrint, err := json.Marshal(info)
-		if err != nil {
-			return nil, err
-		}
-
-		err = utils.WriteFile(fmt.Sprintf("%v.json", "key_seed"), node.Config.CliDir, cliPrint)
-		if err != nil {
 			return nil, err
 		}
 
@@ -262,9 +248,23 @@ func genAccounts(nodes []*types.Node) (accs []*genaccounts.GenesisAccount, err e
 				sdk.NewCoin(types.StakeDenom, sdk.NewInt(node.Key.CoinGenesis)),
 			),
 		}
-
 		accs = append(accs, genacc)
-		node.GenAccount = genacc
+
+		if node.Moniker != "" {
+			info := map[string]string{"secret": secret}
+			cliPrint, err := json.Marshal(info)
+			if err != nil {
+				return nil, err
+			}
+
+			if err := utils.WriteFile(fmt.Sprintf("%v.json", "key_seed"), node.Config.CliDir, cliPrint); err != nil {
+				return nil, err
+			}
+
+			node.GenAccount = genacc
+		} else {
+			*nodes = append((*nodes)[:i], (*nodes)[i+1:]...)
+		}
 	}
 
 	return

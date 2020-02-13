@@ -69,7 +69,7 @@ Example:
 				return err
 			}
 
-			accs, err := genAccounts(nodes)
+			accs, err := genAccounts(&nodes)
 			if err != nil {
 				return err
 			}

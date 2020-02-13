@@ -72,5 +72,13 @@
       "coin_delegate": 1000000,
       "coin_genesis": 1000000000
     }
+  },
+  {
+    "key": {
+      "name": "mask",
+      "password": "mask1234",
+      "mnemonic": "remain local lens arena card squeeze fire head ill win legend practice omit broccoli road rocket honey promote drink stamp wet sign van picnic",
+      "coin_genesis": 1000000000
+    }
   }
 ]
