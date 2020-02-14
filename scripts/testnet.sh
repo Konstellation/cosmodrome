@@ -19,7 +19,7 @@ function create() {
     sudo rm -rdf testnet
   fi
 
-  konstellation testnet --chain-id "$CHAIN_ID"
+  cosmodrome testnet --chain-id "$CHAIN_ID"
 }
 
 function run() {

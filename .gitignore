@@ -13,6 +13,8 @@ docs
 testnet
 localnet
 
+config/testnet.json
+
 # IDE
 .idea/
 *.iml
