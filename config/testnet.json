@@ -1,5 +1,5 @@
 {
-  "type": "localnet",
+  "type": "testnet",
   "config": {
     "consensus": {
       "timeout_commit": 5000000000,
@@ -10,12 +10,12 @@
   "validators": [
     {
       "name": "testnode-1",
-      "ip": "172.18.0.2",
+      "ip": "95.216.212.119",
       "index": 1,
       "description": {
-        "moniker": "testnode-1",
+        "moniker": "hawking",
         "identity": "",
-        "website": "172.18.0.2",
+        "website": "95.216.212.119",
         "details": "testnode-1"
       },
       "key": {
@@ -34,12 +34,12 @@
     },
     {
       "name": "testnode-2",
-      "ip": "172.18.0.3",
+      "ip": "95.216.215.127",
       "index": 2,
       "description": {
-        "moniker": "testnode-2",
+        "moniker": "heisenberg",
         "identity": "",
-        "website": "172.18.0.3",
+        "website": "95.216.215.127",
         "details": "testnode-2"
       },
       "key": {
@@ -49,12 +49,12 @@
     },
     {
       "name": "testnode-3",
-      "ip": "172.18.0.4",
+      "ip": "95.216.210.171",
       "index": 3,
       "description": {
-        "moniker": "testnode-3",
+        "moniker": "kopernik",
         "identity": "",
-        "website": "172.18.0.4",
+        "website": "95.216.210.171",
         "details": "testnode-3"
       },
       "key": {
@@ -64,12 +64,12 @@
     },
     {
       "name": "testnode-4",
-      "ip": "172.18.0.5",
+      "ip": "95.216.207.219",
       "index": 4,
       "description": {
-        "moniker": "testnode-4",
+        "moniker": "newton",
         "identity": "",
-        "website": "172.18.0.5",
+        "website": "95.216.207.219",
         "details": "testnode-4"
       },
       "key": {
@@ -79,12 +79,12 @@
     },
     {
       "name": "testnode-5",
-      "ip": "172.18.0.6",
+      "ip": "188.166.20.172",
       "index": 5,
       "description": {
-        "moniker": "testnode-5",
+        "moniker": "kepler",
         "identity": "",
-        "website": "172.18.0.6",
+        "website": "188.166.20.172",
         "details": "testnode-5"
       },
       "key": {
@@ -94,12 +94,12 @@
     },
     {
       "name": "testnode-6",
-      "ip": "172.18.0.7",
+      "ip": "167.172.37.36",
       "index": 6,
       "description": {
-        "moniker": "testnode-6",
+        "moniker": "einstein",
         "identity": "",
-        "website": "172.18.0.7",
+        "website": "167.172.37.36",
         "details": "testnode-6"
       },
       "key": {
@@ -109,12 +109,12 @@
     },
     {
       "name": "testnode-7",
-      "ip": "172.18.0.8",
+      "ip": "167.172.45.243",
       "index": 7,
       "description": {
-        "moniker": "testnode-7",
+        "moniker": "galilei",
         "identity": "",
-        "website": "172.18.0.8",
+        "website": "167.172.45.243",
         "details": "testnode-7"
       },
       "key": {
@@ -124,12 +124,12 @@
     },
     {
       "name": "testnode-8",
-      "ip": "172.18.0.9",
+      "ip": "167.172.43.125",
       "index": 8,
       "description": {
-        "moniker": "testnode-8",
+        "moniker": "penrose",
         "identity": "",
-        "website": "172.18.0.9",
+        "website": "167.172.43.125",
         "details": "testnode-8"
       },
       "key": {
@@ -139,12 +139,12 @@
     },
     {
       "name": "testnode-9",
-      "ip": "172.18.0.10",
+      "ip": "188.166.37.121",
       "index": 9,
       "description": {
-        "moniker": "testnode-9",
+        "moniker": "dirac",
         "identity": "",
-        "website": "172.18.0.10",
+        "website": "188.166.37.121",
         "details": "testnode-9"
       },
       "key": {
@@ -154,12 +154,12 @@
     },
     {
       "name": "testnode-10",
-      "ip": "172.18.0.11",
+      "ip": "188.166.68.78",
       "index": 10,
       "description": {
-        "moniker": "testnode-10",
+        "moniker": "planck",
         "identity": "",
-        "website": "172.18.0.11",
+        "website": "188.166.68.78",
         "details": "testnode-10"
       },
       "key": {

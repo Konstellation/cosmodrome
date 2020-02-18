@@ -178,6 +178,8 @@ github.com/konstellation/konstellation v0.1.4/go.mod h1:gH21sT6xy9dg/mn1iVtk6mVR
 github.com/konstellation/konstellation v0.1.22/go.mod h1:zQ+Rdr+vZiESdaCdvdcA90h+d3jm8Swyl8+5861ci9g=
 github.com/konstellation/konstellation v0.1.23 h1:RdcwGs+k4ed00YZBucL/80YnP73C3rAKw59Vy8Oj5e8=
 github.com/konstellation/konstellation v0.1.23/go.mod h1:zQ+Rdr+vZiESdaCdvdcA90h+d3jm8Swyl8+5861ci9g=
+github.com/konstellation/konstellation v0.1.24 h1:eC5va8+sDKYVg4AGcRQPkGoIfptCz3Bzr6aCXnKiQOE=
+github.com/konstellation/konstellation v0.1.24/go.mod h1:sXpE0ycAdbm44/zg/hy+cB6V9/CoOpFgUOBK/3ZX3MQ=
 github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515 h1:T+h1c/A9Gawja4Y9mFVWj2vyii2bbUNDw3kt9VxK2EY=
 github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515/go.mod h1:+0opPa2QZZtGFBFZlji/RkVcI2GknAs/DXo4wKdlNEc=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=

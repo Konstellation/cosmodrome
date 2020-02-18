@@ -28,7 +28,7 @@ function create() {
     sudo rm -rdf localnet
   fi
 
-  cosmodrome localnet --chain-id "$CHAIN_ID"
+  cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/localnet.json -o ./localnet
 }
 
 function run() {
