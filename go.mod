@@ -3,6 +3,7 @@ module github.com/konstellation/cosmodrome
 go 1.13
 
 require (
+	github.com/bramvdbogaerde/go-scp v0.0.0-20200119201711-987556b8bdd7
 	github.com/cosmos/cosmos-sdk v0.37.0
 	github.com/ethereum/go-ethereum v1.9.6
 	github.com/google/uuid v1.0.0
@@ -15,4 +16,5 @@ require (
 	github.com/spf13/viper v1.4.0
 	github.com/tendermint/iavl v0.12.4
 	github.com/tendermint/tendermint v0.32.2
+	golang.org/x/crypto v0.0.0-20190404164418-38d8ce5564a5
 )
