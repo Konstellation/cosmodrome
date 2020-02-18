@@ -83,10 +83,10 @@ Example:
 	cmd.Flags().StringP(flagOutputDir, "o", "./net",
 		"Directory to store initialization data for the network",
 	)
-	cmd.Flags().StringP(flagNodeDaemonHome, "d", "konstellation",
+	cmd.Flags().StringP(flagNodeDaemonHome, "d", ".konstellation",
 		"Home directory of the node's daemon configuration",
 	)
-	cmd.Flags().StringP(flagNodeCliHome, "c", "konstellationcli",
+	cmd.Flags().StringP(flagNodeCliHome, "c", ".konstellationcli",
 		"Home directory of the node's cli configuration",
 	)
 	cmd.Flags().StringP(flagNetConfigFile, "n", "./config/net.json",

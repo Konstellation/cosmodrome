@@ -22,47 +22,25 @@ function create() {
   cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/testnet.json -o ./testnet
 }
 
-function run() {
-  source $(pwd)/config/.env
-
-  NODE_NAME=$(hostname)
-
-  if [[ ! -d ${NODE_ROOT} ]]; then
-    echo "Node's config DOSE NOT exist !"
-    echo "" >&2
-    exit 1
-  fi
-
-  containers=$(docker container ls | awk '{print $1}' | sed -n 2p)
-  if [ ! -z "$containers" ]; then
-    echo -n "Remove $containers ... "
-    docker rm -f "$NODE_NAME" >/dev/null
-  fi
-
-  echo -n "Create ${NODE_NAME} ... "
-  echo ""
-  docker run -d \
-    --name "$NODE_NAME" \
-    --net=host \
-    -e CHAIN_ID="$CHAIN_ID" \
-    -e MONIKER="$NODE_NAME" \
-    -e NODE_TYPE=PRIVATE_TESTNET \
-    -p 26666:26656 \
-    -p 26667:26657 \
-    -p 26670:26660 \
-    -v "${NODE_ROOT}"/konstellation:/root/.konstellation \
-    -v "${NODE_ROOT}"/konstellationcli:/root/.konstellationcli \
-    "$IMAGE_OWNER"/konstellation:"$CHAIN_ID"
-  echo "Done !"
-}
-
 function deploy() {
   if [[ -f "./config/testnet.json" ]]; then
+    if [[ -f "./scripts/tmp_deploy.sh" ]]; then
+      rm ./scripts/tmp_deploy.sh
+    fi
     jq -r '
-    to_entries |
-    .[].value |
-    @sh "scp -r -i ~/Documents/.ssh/id_rsa.pub ./testnet/\(.name) root@\(.ip):/root/node"
-  ' ./config/testnet.json
+    .validators[] |
+    "echo \(.ip);
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellation;
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellationcli;
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellationlcd;
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"ps ax | grep konstellation | awk '\''{print \\$1}'\'' | xargs kill\";
+     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellation root@\(.ip):/root;
+     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellationcli root@\(.ip):/root;
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"screen -dmS kn konstellation start\";
+     echo "
+    ' ./config/testnet.json >> ./scripts/tmp_deploy.sh
+    chmod +x ./scripts/tmp_deploy.sh
+    ./scripts/tmp_deploy.sh
   fi
 }
 
@@ -94,9 +72,6 @@ fi
 case "${COMMAND}" in
 "create")
   create
-  ;;
-"run")
-  run
   ;;
 "deploy")
   deploy
