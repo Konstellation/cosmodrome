@@ -5,10 +5,10 @@ go 1.13
 require (
 	github.com/bramvdbogaerde/go-scp v0.0.0-20200119201711-987556b8bdd7
 	github.com/cosmos/cosmos-sdk v0.37.0
-	github.com/ethereum/go-ethereum v1.9.6
-	github.com/google/uuid v1.0.0
-	github.com/konstellation/kn-sdk v0.1.6
-	github.com/konstellation/konstellation v0.1.25
+	github.com/ethereum/go-ethereum v1.9.11
+	github.com/google/uuid v1.1.1
+	github.com/konstellation/kn-sdk v0.1.8
+	github.com/konstellation/konstellation v0.1.26
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.8.1
 	github.com/spf13/cobra v0.0.5
