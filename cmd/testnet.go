@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/cosmos/cosmos-sdk/x/genaccounts"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 
@@ -43,10 +42,10 @@ Example:
 	cosmodrome testnet --output-dir ./output --starting-ip-address 192.168.10.2
 	`,
 		RunE: func(_ *cobra.Command, _ []string) error {
-			config := ctx.Config
+			//config := ctx.Config
 			configFile := srvconfig.DefaultConfig()
 			configFile.MinGasPrices = viper.GetString(server.FlagMinGasPrices)
-			nodesInfoFile := viper.GetString(flagNodesInfoFile)
+			//nodesInfoFile := viper.GetString(flagNodesInfoFile)
 
 			nodeDaemonHomeName = viper.GetString(flagNodeDaemonHome)
 			nodeCliHomeName = viper.GetString(flagNodeCliHome)
@@ -60,33 +59,33 @@ Example:
 				chainID = fmt.Sprintf("test-chain-%v", common.RandStr(6))
 			}
 
-			if err := configClientNodes(config, configFile); err != nil {
-				return err
-			}
-
-			nodes, err := configNodes(config, configFile, nodesInfoFile)
-			if err != nil {
-				return err
-			}
-
-			accs, err := genAccounts(&nodes)
-			if err != nil {
-				return err
-			}
-
-			if err := initGenFiles(cdc, mbm, gus, nodes, accs, config); err != nil {
-				return err
-			}
-
-			if err := genTxs(cdc, mbm, genAccIterator, nodes); err != nil {
-				return err
-			}
-
-			if err := collectGenFiles(cdc, config, genaccounts.AppModuleBasic{}, nodes); err != nil {
-				return err
-			}
-
-			fmt.Printf("Successfully initialized %d node directories\n", len(nodes))
+			//if err := configClientNodes(config, configFile); err != nil {
+			//	return err
+			//}
+			//
+			//nodes, err := configNodes(config, configFile, nodesInfoFile)
+			//if err != nil {
+			//	return err
+			//}
+			//
+			//accs, err := genAccounts(&nodes)
+			//if err != nil {
+			//	return err
+			//}
+			//
+			//if err := initGenFiles(cdc, mbm, gus, nodes, accs, config); err != nil {
+			//	return err
+			//}
+			//
+			//if err := genTxs(cdc, mbm, genAccIterator, nodes); err != nil {
+			//	return err
+			//}
+			//
+			//if err := collectGenFiles(cdc, config, genaccounts.AppModuleBasic{}, nodes); err != nil {
+			//	return err
+			//}
+			//
+			//fmt.Printf("Successfully initialized %d node directories\n", len(nodes))
 			return nil
 		},
 	}
@@ -102,9 +101,6 @@ Example:
 	)
 	cmd.Flags().String(flagNodeCliHome, "konstellationcli",
 		"Home directory of the node's cli configuration",
-	)
-	cmd.Flags().String(flagNodesInfoFile, "./config/testnet.json",
-		"Nodes configuration file",
 	)
 	cmd.Flags().String(flagStartingIPAddress, "testnode",
 		"Starting IP address (testnode results in persistent peers list ID0@testnode-0:26656, ID1@testnode-1:26656, ...)")

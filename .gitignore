@@ -14,6 +14,7 @@ testnet
 localnet
 
 config/testnet.json
+config/keys.json
 
 # IDE
 .idea/

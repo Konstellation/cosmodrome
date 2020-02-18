@@ -33,7 +33,7 @@ function create() {
 
 function run() {
   jq -r '
-    .[] |
+    .validators[] |
     [.name, .ip] |
     @tsv' ./config/localnet.json |
     while IFS=$'\t' read -r NODE_NAME NODE_IP; do

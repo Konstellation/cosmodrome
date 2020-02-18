@@ -3,6 +3,8 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/konstellation/cosmodrome/types"
+	"github.com/konstellation/kn-sdk/crypto/keybase"
 	"os"
 	"path/filepath"
 	"sort"
@@ -31,18 +33,17 @@ import (
 
 	common2 "github.com/konstellation/cosmodrome/common"
 	"github.com/konstellation/kn-sdk/common/utils"
-	"github.com/konstellation/kn-sdk/crypto/keybase"
-	"github.com/konstellation/kn-sdk/types"
+	kntypes "github.com/konstellation/kn-sdk/types"
 )
 
 var (
 	flagNodeDirPrefix     = "node-dir-prefix"
-	flagNumValidators     = "v"
 	flagOutputDir         = "output-dir"
 	flagNodeDaemonHome    = "node-daemon-home"
 	flagNodeCliHome       = "node-cli-home"
 	flagStartingIPAddress = "starting-ip-address"
-	flagNodesInfoFile     = "nodes-info"
+	flagKeyStorageFile    = "key-storage"
+	flagNetConfigFile     = "net-config"
 
 	outDir             = ""
 	gentxsDir          = ""
@@ -59,7 +60,7 @@ func LocalnetCmd(
 	ctx *server.Context,
 	cdc *codec.Codec,
 	mbm module.BasicManager,
-	gus types.GenesisUpdaters,
+	gus kntypes.GenesisUpdaters,
 	_ genutilcli.StakingMsgBuildingHelpers,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
 ) *cobra.Command {
@@ -79,7 +80,8 @@ Example:
 			config := ctx.Config
 			configFile := srvconfig.DefaultConfig()
 			configFile.MinGasPrices = viper.GetString(server.FlagMinGasPrices)
-			nodesInfoFile := viper.GetString(flagNodesInfoFile)
+			netConfigFile := viper.GetString(flagNetConfigFile)
+			keyStorageFile := viper.GetString(flagKeyStorageFile)
 
 			nodeDaemonHomeName = viper.GetString(flagNodeDaemonHome)
 			nodeCliHomeName = viper.GetString(flagNodeCliHome)
@@ -93,33 +95,43 @@ Example:
 				chainID = fmt.Sprintf("test-chain-%v", common.RandStr(6))
 			}
 
-			if err := configClientNodes(config, configFile); err != nil {
-				return err
-			}
-
-			nodes, err := configNodes(config, configFile, nodesInfoFile)
+			keyStorage, err := parseKeyStorage(keyStorageFile)
 			if err != nil {
 				return err
 			}
 
-			accs, err := genAccounts(&nodes)
+			netConfig, err := parseNetConfig(netConfigFile)
 			if err != nil {
 				return err
 			}
 
-			if err := initGenFiles(cdc, mbm, gus, nodes, accs, config); err != nil {
+			accs, err := genAccounts(netConfig.GenAccounts)
+			if err != nil {
 				return err
 			}
 
-			if err := genTxs(cdc, mbm, genAccIterator, nodes); err != nil {
+			validators, err := configValidators(config, configFile, netConfig.Validators, keyStorage, accs)
+			if err != nil {
 				return err
 			}
 
-			if err := collectGenFiles(cdc, config, genaccounts.AppModuleBasic{}, nodes); err != nil {
+			if err := initGenFiles(cdc, mbm, gus, validators, accs, config); err != nil {
 				return err
 			}
 
-			fmt.Printf("Successfully initialized %d node directories\n", len(nodes))
+			if err := genTxs(cdc, mbm, genAccIterator, validators, keyStorage); err != nil {
+				return err
+			}
+
+			if err := clientConfig(config, configFile, validators); err != nil {
+				return err
+			}
+
+			if err := collectGenFiles(cdc, config, genaccounts.AppModuleBasic{}, validators); err != nil {
+				return err
+			}
+
+			fmt.Printf("Successfully initialized %d node directories\n", len(validators))
 			return nil
 		},
 	}
@@ -136,50 +148,126 @@ Example:
 	cmd.Flags().String(flagNodeCliHome, "konstellationcli",
 		"Home directory of the node's cli configuration",
 	)
-	cmd.Flags().String(flagNodesInfoFile, "./config/localnet.json",
-		"Nodes configuration file",
+	cmd.Flags().String(flagNetConfigFile, "./config/localnet.json",
+		"Net configuration file",
+	)
+	cmd.Flags().String(flagKeyStorageFile, "./config/keys.json",
+		"Keys file",
 	)
 	cmd.Flags().String(flagStartingIPAddress, "testnode",
 		"Starting IP address (testnode results in persistent peers list ID0@testnode-0:26656, ID1@testnode-1:26656, ...)")
 
-	cmd.Flags().String(client.FlagChainID, "", "genesis file chain-id, if left blank will be randomly created")
-
 	cmd.Flags().String(
-		server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", types.StakeDenom),
+		server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", kntypes.StakeDenom),
 		"Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.01apple,0.001darc)",
 	)
 
 	return cmd
 }
 
-func configClientNodes(config *cfg.Config, configFile *srvconfig.Config) (err error) {
-	config.SetRoot(configDir)
+func parseKeyStorage(keyStorageFile string) (*types.KeyStorage, error) {
+	var keyStorage types.KeyStorage
+	if err := utils.ReadJson(keyStorageFile, &keyStorage); err != nil {
+		return nil, err
+	}
 
-	err = os.MkdirAll(filepath.Join(configDir, "config"), nodeDirPerm)
+	return &keyStorage, nil
+}
+
+func saveKey(cliDir string, key *types.Key) error {
+	_, secret, err := keybase.SaveCoinKey(cliDir, key.Name, key.Password, key.Mnemonic, true)
 	if err != nil {
 		_ = os.RemoveAll(outDir)
 		return err
 	}
 
-	configFilePath := filepath.Join(configDir, "config/konstellation.toml")
-	srvconfig.WriteConfigFile(configFilePath, configFile)
+	info := map[string]string{"secret": secret}
+	cliPrint, err := json.Marshal(info)
+	if err != nil {
+		return err
+	}
+
+	if err := utils.WriteFile(fmt.Sprintf("%v.json", "key_seed"), cliDir, cliPrint); err != nil {
+		return err
+	}
 
 	return nil
 }
 
-func configNode(config *cfg.Config, configFile *srvconfig.Config, info types.NodeInfo) (node *types.Node, err error) {
+func parseNetConfig(netConfigFile string) (*types.NetConfig, error) {
+	var netConfig types.NetConfig
+
+	if err := utils.ReadJson(netConfigFile, &netConfig); err != nil {
+		return nil, err
+	}
+
+	return &netConfig, nil
+}
+
+func genAccounts(genaccs []*types.GenAccount) ([]*genaccounts.GenesisAccount, error) {
+	accs := make([]*genaccounts.GenesisAccount, 0)
+	for _, ga := range genaccs {
+		addr, err := sdk.AccAddressFromBech32(ga.Address)
+		if err != nil {
+			return nil, err
+		}
+
+		genacc := &genaccounts.GenesisAccount{
+			Address: addr,
+			Coins: sdk.NewCoins(
+				sdk.NewCoin(kntypes.StakeDenom, sdk.NewInt(ga.CoinGenesis)),
+			),
+		}
+
+		accs = append(accs, genacc)
+	}
+
+	return accs, nil
+}
+
+func clientConfig(config *cfg.Config, configFile *srvconfig.Config, validators []*types.Validator) (err error) {
+	var addressesIPs []string
+
+	for _, validator := range validators {
+		addressesIPs = append(addressesIPs, validator.Memo)
+	}
+
+	sort.Strings(addressesIPs)
+	config.SetRoot(configDir)
+	config.Moniker = ""
+	config.RPC.CORSAllowedOrigins = []string{"*"}
+	config.P2P.PersistentPeers = strings.Join(addressesIPs, ",")
+
+	if err := os.MkdirAll(filepath.Join(configDir, "config"), nodeDirPerm); err != nil {
+		_ = os.RemoveAll(outDir)
+		return err
+	}
+
+	configFilePath := filepath.Join(configDir, "config/app.toml")
+	srvconfig.WriteConfigFile(configFilePath, configFile)
+	cfg.WriteConfigFile(filepath.Join(config.RootDir, "config", "config.toml"), config)
+
+	return nil
+}
+
+func configValidator(config *cfg.Config, configFile *srvconfig.Config, info *types.ValidatorInfo, key *types.Key, genAccount *genaccounts.GenesisAccount) (validator *types.Validator, err error) {
 	nodeDir := filepath.Join(outDir, info.Name, nodeDaemonHomeName)
-	clientDir := filepath.Join(outDir, info.Name, nodeCliHomeName)
+	cliDir := filepath.Join(outDir, info.Name, nodeCliHomeName)
 	nodeConfig := types.NodeConfig{
 		DirName:   info.Name,
 		DaemonDir: nodeDir,
-		CliDir:    clientDir,
+		CliDir:    cliDir,
 	}
 
 	config.SetRoot(nodeDir)
 	config.Moniker = info.Name
+	if info.Cors != "" {
+		config.RPC.CORSAllowedOrigins = strings.Split(info.Cors, ",")
+	} else {
+		config.RPC.CORSAllowedOrigins = []string{}
+	}
 
-	if err := os.MkdirAll(clientDir, nodeDirPerm); err != nil {
+	if err := os.MkdirAll(cliDir, nodeDirPerm); err != nil {
 		_ = os.RemoveAll(outDir)
 		return nil, err
 	}
@@ -189,8 +277,12 @@ func configNode(config *cfg.Config, configFile *srvconfig.Config, info types.Nod
 		return nil, err
 	}
 
-	configFilePath := filepath.Join(nodeDir, "config/konstellation.toml")
+	configFilePath := filepath.Join(nodeDir, "config/app.toml")
 	srvconfig.WriteConfigFile(configFilePath, configFile)
+
+	if err := saveKey(nodeConfig.CliDir, key); err != nil {
+		return nil, err
+	}
 
 	nodeID, valPubKey, err := genutil.InitializeNodeValidatorFiles(config)
 	if err != nil {
@@ -200,10 +292,10 @@ func configNode(config *cfg.Config, configFile *srvconfig.Config, info types.Nod
 
 	memo := fmt.Sprintf("%s@%s:26656", nodeID, info.IP)
 
-	return &types.Node{
+	return &types.Validator{
 		Index:       info.Index,
 		Moniker:     info.Description.Moniker,
-		Config:      nodeConfig,
+		NodeConfig:  nodeConfig,
 		GenFile:     config.GenesisFile(),
 		Memo:        memo,
 		ID:          nodeID,
@@ -213,64 +305,44 @@ func configNode(config *cfg.Config, configFile *srvconfig.Config, info types.Nod
 		IP:          info.IP,
 		Key:         info.Key,
 		Description: info.Description,
+		GenAccount:  genAccount,
 	}, nil
 }
 
-func configNodes(config *cfg.Config, configFile *srvconfig.Config, nodesInfoFile string) (nodes []*types.Node, err error) {
-	var nodeInfos []types.NodeInfo
-	err = utils.ReadJson(nodesInfoFile, &nodeInfos)
-	if err != nil {
-		panic(err)
-	}
-
-	for _, nodeInfo := range nodeInfos {
-		node, err := configNode(config, configFile, nodeInfo)
+func configValidators(config *cfg.Config, configFile *srvconfig.Config,
+	validatorInfos []*types.ValidatorInfo,
+	keyStorage *types.KeyStorage,
+	genAccounts []*genaccounts.GenesisAccount) (validators []*types.Validator, err error) {
+	for _, valInfo := range validatorInfos {
+		key, err := keyStorage.GetKey(valInfo.Key.Address)
 		if err != nil {
 			return nil, err
 		}
-		nodes = append(nodes, node)
+
+		addr, err := sdk.AccAddressFromBech32(valInfo.Key.Address)
+		if err != nil {
+			return nil, err
+		}
+
+		var genAccount *genaccounts.GenesisAccount
+		for _, gacc := range genAccounts {
+			if gacc.Address.Equals(addr) {
+				genAccount = gacc
+			}
+		}
+
+		node, err := configValidator(config, configFile, valInfo, key, genAccount)
+		if err != nil {
+			return nil, err
+		}
+
+		validators = append(validators, node)
 	}
 
 	return
 }
 
-func genAccounts(nodes *[]*types.Node) (accs []*genaccounts.GenesisAccount, err error) {
-	for i, node := range *nodes {
-		addr, secret, err := keybase.SaveCoinKey(node.Config.CliDir, node.Key.Name, node.Key.Password, node.Key.Mnemonic, true)
-		if err != nil {
-			_ = os.RemoveAll(outDir)
-			return nil, err
-		}
-
-		genacc := &genaccounts.GenesisAccount{
-			Address: addr,
-			Coins: sdk.NewCoins(
-				sdk.NewCoin(types.StakeDenom, sdk.NewInt(node.Key.CoinGenesis)),
-			),
-		}
-		accs = append(accs, genacc)
-
-		if node.Moniker != "" {
-			info := map[string]string{"secret": secret}
-			cliPrint, err := json.Marshal(info)
-			if err != nil {
-				return nil, err
-			}
-
-			if err := utils.WriteFile(fmt.Sprintf("%v.json", "key_seed"), node.Config.CliDir, cliPrint); err != nil {
-				return nil, err
-			}
-
-			node.GenAccount = genacc
-		} else {
-			*nodes = append((*nodes)[:i], (*nodes)[i+1:]...)
-		}
-	}
-
-	return
-}
-
-func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus types.GenesisUpdaters, nodes []*types.Node, accs []*genaccounts.GenesisAccount, config *cfg.Config) error {
+func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus kntypes.GenesisUpdaters, validators []*types.Validator, accs []*genaccounts.GenesisAccount, config *cfg.Config) error {
 	appGenState := mbm.DefaultGenesis()
 
 	appGenState[genaccounts.ModuleName] = cdc.MustMarshalJSON(accs)
@@ -292,20 +364,15 @@ func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus types.GenesisUp
 	genDoc.AppState = appState
 
 	// generate empty genesis files for each validator and save
-	for _, node := range nodes {
-		if err := genutil.ExportGenesisFile(genDoc, node.GenFile); err != nil {
+	for _, validator := range validators {
+		if err := genutil.ExportGenesisFile(genDoc, validator.GenFile); err != nil {
 			return err
 		}
 
-		toPrint := common2.NewPrintInfo(node.Moniker, chainID, node.ID, "", appState)
+		toPrint := common2.NewPrintInfo(validator.Moniker, chainID, validator.ID, "", appState)
 		if err := common2.DisplayInfo(cdc, toPrint); err != nil {
 			return err
 		}
-	}
-
-	config.SetRoot(configDir)
-	if err := genutil.ExportGenesisFile(genDoc, config.GenesisFile()); err != nil {
-		return err
 	}
 
 	return nil
@@ -315,10 +382,11 @@ func genTxs(
 	cdc *codec.Codec,
 	mbm module.BasicManager,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
-	nodes []*types.Node,
+	validators []*types.Validator,
+	keyStorage *types.KeyStorage,
 ) error {
-	for _, node := range nodes {
-		genDoc, err := tmtypes.GenesisDocFromFile(node.GenFile)
+	for _, validator := range validators {
+		genDoc, err := tmtypes.GenesisDocFromFile(validator.GenFile)
 		if err != nil {
 			return err
 		}
@@ -327,45 +395,48 @@ func genTxs(
 		if err = cdc.UnmarshalJSON(genDoc.AppState, &genesisState); err != nil {
 			return err
 		}
-
 		if err = mbm.ValidateGenesis(genesisState); err != nil {
 			return err
 		}
 
-		kb, err := client.NewKeyBaseFromDir(node.Config.CliDir)
+		kb, err := client.NewKeyBaseFromDir(validator.NodeConfig.CliDir)
 		if err != nil {
 			return err
 		}
 
-		key, err := kb.Get(node.Key.Name)
+		valKey, err := keyStorage.GetKey(validator.Key.Address)
 		if err != nil {
 			return err
 		}
 
-		c := sdk.NewCoin(types.StakeDenom, sdk.NewInt(node.Key.CoinDelegate))
+		key, err := kb.Get(valKey.Name)
+		if err != nil {
+			return err
+		}
+
+		c := sdk.NewCoin(kntypes.StakeDenom, sdk.NewInt(validator.Key.CoinDelegate))
 		coins := sdk.NewCoins(c)
-		err = genutil.ValidateAccountInGenesis(genesisState, genAccIterator, key.GetAddress(), coins, cdc)
-		if err != nil {
+		if err := genutil.ValidateAccountInGenesis(genesisState, genAccIterator, key.GetAddress(), coins, cdc); err != nil {
 			return err
 		}
 
 		msg := staking.NewMsgCreateValidator(
-			sdk.ValAddress(node.GenAccount.Address),
-			node.ValPubKey,
+			sdk.ValAddress(validator.GenAccount.Address),
+			validator.ValPubKey,
 			c,
 			staking.NewDescription(
-				node.Description.Moniker,
-				node.Description.Identity,
-				node.Description.Website,
-				node.Description.Details,
+				validator.Description.Moniker,
+				validator.Description.Identity,
+				validator.Description.Website,
+				validator.Description.Details,
 			),
 			staking.NewCommissionRates(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
 			sdk.OneInt(),
 		)
 
-		tx := auth.NewStdTx([]sdk.Msg{msg}, auth.StdFee{}, []auth.StdSignature{}, node.Memo)
-		txBldr := auth.NewTxBuilderFromCLI().WithChainID(chainID).WithMemo(node.Memo).WithKeybase(kb)
-		signedTx, err := txBldr.SignStdTx(node.Key.Name, node.Key.Password, tx, false)
+		tx := auth.NewStdTx([]sdk.Msg{msg}, auth.StdFee{}, []auth.StdSignature{}, validator.Memo)
+		txBldr := auth.NewTxBuilderFromCLI().WithChainID(chainID).WithMemo(validator.Memo).WithKeybase(kb)
+		signedTx, err := txBldr.SignStdTx(valKey.Name, valKey.Password, tx, false)
 		if err != nil {
 			_ = os.RemoveAll(outDir)
 			return err
@@ -377,8 +448,7 @@ func genTxs(
 			return err
 		}
 
-		err = utils.WriteFile(fmt.Sprintf("%v.json", node.Moniker), gentxsDir, txBytes)
-		if err != nil {
+		if err := utils.WriteFile(fmt.Sprintf("%v.json", validator.Moniker), gentxsDir, txBytes); err != nil {
 			_ = os.RemoveAll(outDir)
 			return err
 		}
@@ -391,24 +461,17 @@ func collectGenFiles(
 	cdc *codec.Codec,
 	config *cfg.Config,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
-	nodes []*types.Node,
+	validators []*types.Validator,
 ) error {
 	var appState json.RawMessage
-	var addressesIPs []string
 	genTime := tmtime.Now()
 
-	for _, node := range nodes {
-		config.SetRoot(node.Config.DaemonDir)
-		config.Moniker = node.Moniker
-		if node.Cors != "" {
-			config.RPC.CORSAllowedOrigins = strings.Split(node.Cors, ",")
-		} else {
-			config.RPC.CORSAllowedOrigins = []string{}
-		}
+	for _, validator := range validators {
+		config.SetRoot(validator.NodeConfig.DaemonDir)
+		config.Moniker = validator.Moniker
+		initCfg := genutil.NewInitConfig(chainID, gentxsDir, validator.Moniker, validator.ID, validator.ValPubKey)
 
-		initCfg := genutil.NewInitConfig(chainID, gentxsDir, node.Moniker, node.ID, node.ValPubKey)
-
-		genDoc, err := tmtypes.GenesisDocFromFile(node.GenFile)
+		genDoc, err := tmtypes.GenesisDocFromFile(validator.GenFile)
 		if err != nil {
 			return err
 		}
@@ -418,28 +481,19 @@ func collectGenFiles(
 			return err
 		}
 
+		// set the canonical application state (they should not differ)
 		if appState == nil {
-			// set the canonical application state (they should not differ)
 			appState = nodeAppState
 		}
 
-		genFile := config.GenesisFile()
-
 		// overwrite each validator's genesis file to have a canonical genesis time
-		err = genutil.ExportGenesisFileWithTime(genFile, chainID, nil, appState, genTime)
-		if err != nil {
+		genFile := config.GenesisFile()
+		if err := genutil.ExportGenesisFileWithTime(genFile, chainID, nil, appState, genTime); err != nil {
 			return err
 		}
-
-		addressesIPs = append(addressesIPs, node.Memo)
 	}
-	sort.Strings(addressesIPs)
 
+	// genesis client
 	config.SetRoot(configDir)
-	config.Moniker = ""
-	config.RPC.CORSAllowedOrigins = []string{"*"}
-	config.P2P.PersistentPeers = strings.Join(addressesIPs, ",")
-	cfg.WriteConfigFile(filepath.Join(config.RootDir, "config", "config.toml"), config)
-
 	return genutil.ExportGenesisFileWithTime(config.GenesisFile(), chainID, nil, appState, genTime)
 }

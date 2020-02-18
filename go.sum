@@ -168,6 +168,8 @@ github.com/konstellation/kn-sdk v0.1.3 h1:gv56wfFFcRBKKb9Rafj9mw8+2+/4bFqH/fZjNS
 github.com/konstellation/kn-sdk v0.1.3/go.mod h1:sW04otK4M2Oe03r/u42036EmQFbEqhmCBGgQtfbCVdc=
 github.com/konstellation/kn-sdk v0.1.5 h1:eJAh/FP1YhTCI7VQVJqj31WokorIUKlLfPUojqLULuk=
 github.com/konstellation/kn-sdk v0.1.5/go.mod h1:pVt9FP0JcEO7DlOT4RSsJaG7qezervpCvB4Gb3fGjKI=
+github.com/konstellation/kn-sdk v0.1.6 h1:N6Iin8J01UpACXD+v9h3KmtJtOjENnF34gwOwk/ww40=
+github.com/konstellation/kn-sdk v0.1.6/go.mod h1:pVt9FP0JcEO7DlOT4RSsJaG7qezervpCvB4Gb3fGjKI=
 github.com/konstellation/konstellation v0.1.2 h1:qVRrplDR1W5FmDygwR0K6GAdzswF29W1VkjE7d2q3qA=
 github.com/konstellation/konstellation v0.1.2/go.mod h1:fYMWW3nO1nTmy5w8ki9ooCSCm1T1Q3eK5XBzkSdL9LM=
 github.com/konstellation/konstellation v0.1.3/go.mod h1:lKAA1LjCGS4smFO3IcLqHiWC6yK4SohxkfjEAhztMDY=

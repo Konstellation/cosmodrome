@@ -1,84 +1,213 @@
-[
-  {
-    "name": "testnode-1",
-    "ip": "172.18.0.2",
-    "index": 1,
-    "description": {
-      "moniker": "testnode-1",
-      "identity": "",
-      "website": "",
-      "details": "1"
-    },
-    "key": {
-      "name": "satoshi",
-      "password": "satoshi1",
-      "mnemonic": "creek round dish idea parade balance embody rate sail wheel casino suspect cute transfer pizza square cabbage valid divert gap chimney legal hurt interest",
-      "coin_delegate": 100000,
-      "coin_genesis": 1000000000
-    },
-    "cors": "*",
-    "faucet": true
+{
+  "type": "localnet",
+  "config": {
   },
-  {
-    "name": "testnode-2",
-    "ip": "172.18.0.3",
-    "index": 2,
-    "description": {
-      "moniker": "testnode-2",
-      "identity": "",
-      "website": "",
-      "details": "2"
+  "validators": [
+    {
+      "name": "testnode-1",
+      "ip": "172.18.0.2",
+      "index": 1,
+      "description": {
+        "moniker": "testnode-1",
+        "identity": "",
+        "website": "172.18.0.2",
+        "details": "testnode-1"
+      },
+      "key": {
+        "address": "darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx",
+        "coin_delegate": 100000000
+      },
+      "config": {
+        "rpc": {
+          "cors_allowed_origins": [
+            "*"
+          ],
+          "laddr": "tcp://0.0.0.0:26657"
+        },
+        "consensus": {
+          "timeout_commit": "5s",
+          "create_empty_blocks": true,
+          "create_empty_blocks_interval": "0s"
+        }
+      },
+      "faucet": true
     },
-    "key": {
-      "name": "nakamoto",
-      "password": "nakamoto",
-      "mnemonic": "bachelor miracle cook decade chalk table blouse learn vanish menu general transfer engage coast scout rookie glove affair target glide own manual consider scrub",
-      "coin_delegate": 1000000,
-      "coin_genesis": 1000000000
-    }
-  },
-  {
-    "name": "testnode-3",
-    "ip": "172.18.0.4",
-    "index": 3,
-    "description": {
-      "moniker": "testnode-3",
-      "identity": "",
-      "website": "",
-      "details": "3"
+    {
+      "name": "testnode-2",
+      "ip": "172.18.0.3",
+      "index": 2,
+      "description": {
+        "moniker": "testnode-2",
+        "identity": "",
+        "website": "172.18.0.3",
+        "details": "testnode-2"
+      },
+      "key": {
+        "address": "darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc",
+        "coin_delegate": 100000000
+      }
     },
-    "key": {
-      "name": "vitalik",
-      "password": "vitalik1",
-      "mnemonic": "hair reunion riot fish hawk arch buzz debris arch easily search glove private rival boat resist chaos cause panda icon pave shock egg ability",
-      "coin_delegate": 1000000,
-      "coin_genesis": 1000000000
-    }
-  },
-  {
-    "name": "testnode-4",
-    "ip": "172.18.0.5",
-    "index": 4,
-    "description": {
-      "moniker": "testnode-4",
-      "identity": "",
-      "website": "",
-      "details": "4"
+    {
+      "name": "testnode-3",
+      "ip": "172.18.0.4",
+      "index": 3,
+      "description": {
+        "moniker": "testnode-3",
+        "identity": "",
+        "website": "172.18.0.4",
+        "details": "testnode-3"
+      },
+      "key": {
+        "address": "darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf",
+        "coin_delegate": 100000000
+      }
     },
-    "key": {
-      "name": "buterin",
-      "password": "buterin1",
-      "mnemonic": "other original trouble craft hard loan ostrich aim drastic team absent kiwi matrix dose engage cup novel humor brave budget stage label future exile",
-      "coin_delegate": 1000000,
-      "coin_genesis": 1000000000
+    {
+      "name": "testnode-4",
+      "ip": "172.18.0.5",
+      "index": 4,
+      "description": {
+        "moniker": "testnode-4",
+        "identity": "",
+        "website": "172.18.0.5",
+        "details": "testnode-4"
+      },
+      "key": {
+        "address": "darc1f5sehz0tw7c357p0wqect8lu4728etp08jl55a",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-5",
+      "ip": "172.18.0.6",
+      "index": 5,
+      "description": {
+        "moniker": "testnode-5",
+        "identity": "",
+        "website": "172.18.0.6",
+        "details": "testnode-5"
+      },
+      "key": {
+        "address": "darc1z6u8hddknlp33z79rra7q4gjlw3thwqrdzyplq",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-6",
+      "ip": "172.18.0.7",
+      "index": 6,
+      "description": {
+        "moniker": "testnode-6",
+        "identity": "",
+        "website": "172.18.0.7",
+        "details": "testnode-6"
+      },
+      "key": {
+        "address": "darc1707wrvr797umhs7f8yqpa5v7g5hecdp3hafd0p",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-7",
+      "ip": "172.18.0.8",
+      "index": 7,
+      "description": {
+        "moniker": "testnode-7",
+        "identity": "",
+        "website": "172.18.0.8",
+        "details": "testnode-7"
+      },
+      "key": {
+        "address": "darc15gszq0w4leup59l3ewyv0d4ca8t6v9cyuqm2k6",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-8",
+      "ip": "172.18.0.9",
+      "index": 8,
+      "description": {
+        "moniker": "testnode-8",
+        "identity": "",
+        "website": "172.18.0.9",
+        "details": "testnode-8"
+      },
+      "key": {
+        "address": "darc1mte8eevm6a766l6gx2tjphcdetr2httsudaqmf",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-9",
+      "ip": "172.18.0.10",
+      "index": 9,
+      "description": {
+        "moniker": "testnode-9",
+        "identity": "",
+        "website": "172.18.0.10",
+        "details": "testnode-9"
+      },
+      "key": {
+        "address": "darc1d22ccl8xpzzzldl28l9gs9htrgaatkaxjwskkl",
+        "coin_delegate": 100000000
+      }
+    },
+    {
+      "name": "testnode-10",
+      "ip": "172.18.0.11",
+      "index": 10,
+      "description": {
+        "moniker": "testnode-10",
+        "identity": "",
+        "website": "172.18.0.11",
+        "details": "testnode-10"
+      },
+      "key": {
+        "address": "darc1x68e44c90hy49ppxqr2n0lawkv5w5vzp98uw4j",
+        "coin_delegate": 100000000
+      }
     }
-  },
-  {
-    "key": {
-      "name": "mask",
-      "password": "mask1234",
-      "mnemonic": "remain local lens arena card squeeze fire head ill win legend practice omit broccoli road rocket honey promote drink stamp wet sign van picnic",
-      "coin_genesis": 1000000000
+  ],
+  "gen_accounts": [
+    {
+      "address": "darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx",
+      "coin_genesis": 300000000
+    },
+    {
+      "address": "darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc",
+      "coin_genesis": 200000000
+    },
+    {
+      "address": "darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf",
+      "coin_genesis": 200000000
+    },
+    {
+      "address": "darc1f5sehz0tw7c357p0wqect8lu4728etp08jl55a",
+      "coin_genesis": 200000000
+    },
+    {
+      "address": "darc1z6u8hddknlp33z79rra7q4gjlw3thwqrdzyplq",
+      "coin_genesis": 175000000
+    },
+    {
+      "address": "darc1707wrvr797umhs7f8yqpa5v7g5hecdp3hafd0p",
+      "coin_genesis": 175000000
+    },
+    {
+      "address": "darc15gszq0w4leup59l3ewyv0d4ca8t6v9cyuqm2k6",
+      "coin_genesis": 150000000
+    },
+    {
+      "address": "darc1mte8eevm6a766l6gx2tjphcdetr2httsudaqmf",
+      "coin_genesis": 150000000
+    },
+    {
+      "address": "darc1d22ccl8xpzzzldl28l9gs9htrgaatkaxjwskkl",
+      "coin_genesis": 125000000
+    },
+    {
+      "address": "darc1x68e44c90hy49ppxqr2n0lawkv5w5vzp98uw4j",
+      "coin_genesis": 125000000
     }
-  }
-]
+  ]
+}
