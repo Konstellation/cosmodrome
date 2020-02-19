@@ -24,23 +24,25 @@ function create() {
 
 function deploy() {
   if [[ -f "./config/testnet.json" ]]; then
-    if [[ -f "./scripts/tmp_deploy.sh" ]]; then
-      rm ./scripts/tmp_deploy.sh
+    if [[ -f "./scripts/deploy_testnet_tmp.sh" ]]; then
+      rm ./scripts/deploy_testnet_tmp.sh
     fi
     jq -r '
     .validators[] |
     "echo \(.ip);
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellation;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellationcli;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) rm -rdf /root/.konstellationlcd;
      ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"ps ax | grep konstellation | awk '\''{print \\$1}'\'' | xargs kill\";
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"konstellation unsafe-reset-all\";
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellation\";
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellationcli\";
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellationlcd\";
      scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellation root@\(.ip):/root;
      scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellationcli root@\(.ip):/root;
      ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"screen -dmS kn konstellation start\";
+     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp:\/\/0.0.0.0:1317\";
      echo "
-    ' ./config/testnet.json >> ./scripts/tmp_deploy.sh
-    chmod +x ./scripts/tmp_deploy.sh
-    ./scripts/tmp_deploy.sh
+    ' ./config/testnet.json >> ./scripts/deploy_testnet_tmp.sh
+    chmod +x ./scripts/deploy_testnet_tmp.sh
+#    ./scripts/deploy_testnet_tmp.sh
   fi
 }
 

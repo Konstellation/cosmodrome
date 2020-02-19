@@ -52,8 +52,8 @@ function run() {
         -e CHAIN_ID="$CHAIN_ID" \
         -e MONIKER="$NODE_NAME" \
         -e NODE_TYPE=PRIVATE_TESTNET \
-        -v "$NODE_ROOT"/konstellation:/root/.konstellation \
-        -v "$NODE_ROOT"/konstellationcli:/root/.konstellationcli \
+        -v "$NODE_ROOT"/.konstellation:/root/.konstellation \
+        -v "$NODE_ROOT"/.konstellationcli:/root/.konstellationcli \
         konstellation:"$CHAIN_ID"
       echo "Done !"
     done
@@ -61,7 +61,7 @@ function run() {
 
 function start() {
   jq -r '
-    .[] |
+    .validators[] |
     [.name, .ip] |
     @tsv' ./config/localnet.json |
     while IFS=$'\t' read -r NODE_NAME _; do
@@ -73,7 +73,7 @@ function start() {
 
 function stop() {
   jq -r '
-    .[] |
+    .validators[] |
     [.name, .ip] |
     @tsv' ./config/localnet.json |
     while IFS=$'\t' read -r NODE_NAME _; do
@@ -85,7 +85,7 @@ function stop() {
 
 function rm() {
   jq -r '
-    .[] |
+    .validators[] |
     [.name, .ip] |
     @tsv' ./config/localnet.json |
     while IFS=$'\t' read -r NODE_NAME NODE_IP; do

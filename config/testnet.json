@@ -5,6 +5,10 @@
       "timeout_commit": 5000000000,
       "create_empty_blocks": true,
       "create_empty_blocks_interval": 30
+    },
+    "tx_index": {
+      "index_tags": "",
+      "index_all_tags": true
     }
   },
   "validators": [

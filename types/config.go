@@ -40,6 +40,30 @@ type ConsensusConfig struct {
 	CreateEmptyBlocksInterval time.Duration `json:"create_empty_blocks_interval" mapstructure:"create_empty_blocks_interval"`
 }
 
+//-----------------------------------------------------------------------------
+// TxIndexConfig
+
+// TxIndexConfig defines the configuration for the transaction indexer,
+// including tags to index.
+type TxIndexConfig struct {
+	// Comma-separated list of tags to index (by default the only tag is "tx.hash")
+	//
+	// You can also index transactions by height by adding "tx.height" tag here.
+	//
+	// It's recommended to index only a subset of tags due to possible memory
+	// bloat. This is, of course, depends on the indexer's DB and the volume of
+	// transactions.
+	IndexTags string `json:"index_tags" mapstructure:"index_tags"`
+
+	// When set to true, tells indexer to index all tags (predefined tags:
+	// "tx.hash", "tx.height" and all tags from DeliverTx responses).
+	//
+	// Note this may be not desirable (see the comment above). IndexTags has a
+	// precedence over IndexAllTags (i.e. when given both, IndexTags will be
+	// indexed).
+	IndexAllTags bool `json:"index_all_tags" mapstructure:"index_all_tags"`
+}
+
 type Config struct {
 	// Top level options use an anonymous struct
 	BaseConfig `mapstructure:",squash"`
@@ -47,4 +71,5 @@ type Config struct {
 	// Options for services
 	RPC       *RPCConfig       `mapstructure:"rpc" json:"rpc"`
 	Consensus *ConsensusConfig `mapstructure:"consensus" json:"consensus"`
+	TxIndex   *TxIndexConfig   `mapstructure:"tx_index" json:"tx_index"`
 }
