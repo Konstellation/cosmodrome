@@ -7,7 +7,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.37.0
 	github.com/ethereum/go-ethereum v1.9.11
 	github.com/google/uuid v1.1.1
-	github.com/konstellation/kn-sdk v0.1.8
+	github.com/konstellation/kn-sdk v0.1.10
 	github.com/konstellation/konstellation v0.1.26
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/pkg/errors v0.8.1
