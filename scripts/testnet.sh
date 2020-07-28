@@ -8,6 +8,7 @@ function usage() {
   echo "  ./testnet.sh command [chain-id]"
   echo ""
   echo "Command:"
+  echo "  create    Creates new net conf files "
   echo "  run       Run testnet full node on the server side. "
   echo "  deploy    Deploy testnet to testnodes. "
   echo "  copy      Copy config and genesis to yout konstellation dir. "
@@ -30,15 +31,15 @@ function deploy() {
     jq -r '
     .validators[] |
     "echo \(.ip);
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"ps ax | grep konstellation | awk '\''{print \\$1}'\'' | xargs kill\";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"konstellation unsafe-reset-all\";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellation\";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellationcli\";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"rm -rdf /root/.konstellationlcd\";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellation root@\(.ip):/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/\(.name)/.konstellationcli root@\(.ip):/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"screen -dmS kn konstellation start\";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@\(.ip) \"screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp:\/\/0.0.0.0:1317\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"ps ax | grep konstellation | awk '\''{print \\$1}'\'' | xargs kill\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"konstellation unsafe-reset-all\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"rm -rdf /root/.konstellation\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"rm -rdf /root/.konstellationcli\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"rm -rdf /root/.konstellationlcd\";
+     scp -i ~/.ssh/bldg -r ./testnet/\(.name)/.konstellation root@\(.ip):/root;
+     scp -i ~/.ssh/bldg -r ./testnet/\(.name)/.konstellationcli root@\(.ip):/root;
+     ssh -i ~/.ssh/bldg root@\(.ip) \"screen -dmS kn konstellation start\";
+     ssh -i ~/.ssh/bldg root@\(.ip) \"screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp:\/\/0.0.0.0:1317\";
      echo "
     ' ./config/testnet.json >> ./scripts/deploy_testnet_tmp.sh
     chmod +x ./scripts/deploy_testnet_tmp.sh

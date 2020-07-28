@@ -14,17 +14,17 @@
   "validators": [
     {
       "name": "testnode-1",
-      "ip": "95.216.212.119",
+      "ip": "node1.konstellation.tech",
       "index": 1,
       "description": {
         "moniker": "hawking",
         "identity": "",
-        "website": "95.216.212.119",
+        "website": "https://node1.konstellation.tech",
         "details": "testnode-1"
       },
       "key": {
         "address": "darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx",
-        "coin_delegate": 100000000
+        "coin_delegate": 100000000000
       },
       "config": {
         "rpc": {
@@ -38,180 +38,47 @@
     },
     {
       "name": "testnode-2",
-      "ip": "95.216.215.127",
+      "ip": "node2.konstellation.tech",
       "index": 2,
       "description": {
         "moniker": "heisenberg",
         "identity": "",
-        "website": "95.216.215.127",
+        "website": "https://node2.konstellation.tech",
         "details": "testnode-2"
       },
       "key": {
         "address": "darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc",
-        "coin_delegate": 100000000
+        "coin_delegate": 100000000000
       }
     },
     {
       "name": "testnode-3",
-      "ip": "95.216.210.171",
+      "ip": "node3.konstellation.tech",
       "index": 3,
       "description": {
         "moniker": "kopernik",
         "identity": "",
-        "website": "95.216.210.171",
+        "website": "https://node3.konstellation.tech",
         "details": "testnode-3"
       },
       "key": {
         "address": "darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-4",
-      "ip": "95.216.207.219",
-      "index": 4,
-      "description": {
-        "moniker": "newton",
-        "identity": "",
-        "website": "95.216.207.219",
-        "details": "testnode-4"
-      },
-      "key": {
-        "address": "darc1f5sehz0tw7c357p0wqect8lu4728etp08jl55a",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-5",
-      "ip": "188.166.20.172",
-      "index": 5,
-      "description": {
-        "moniker": "kepler",
-        "identity": "",
-        "website": "188.166.20.172",
-        "details": "testnode-5"
-      },
-      "key": {
-        "address": "darc1z6u8hddknlp33z79rra7q4gjlw3thwqrdzyplq",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-6",
-      "ip": "167.172.37.36",
-      "index": 6,
-      "description": {
-        "moniker": "einstein",
-        "identity": "",
-        "website": "167.172.37.36",
-        "details": "testnode-6"
-      },
-      "key": {
-        "address": "darc1707wrvr797umhs7f8yqpa5v7g5hecdp3hafd0p",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-7",
-      "ip": "167.172.45.243",
-      "index": 7,
-      "description": {
-        "moniker": "galilei",
-        "identity": "",
-        "website": "167.172.45.243",
-        "details": "testnode-7"
-      },
-      "key": {
-        "address": "darc15gszq0w4leup59l3ewyv0d4ca8t6v9cyuqm2k6",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-8",
-      "ip": "167.172.43.125",
-      "index": 8,
-      "description": {
-        "moniker": "penrose",
-        "identity": "",
-        "website": "167.172.43.125",
-        "details": "testnode-8"
-      },
-      "key": {
-        "address": "darc1mte8eevm6a766l6gx2tjphcdetr2httsudaqmf",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-9",
-      "ip": "188.166.37.121",
-      "index": 9,
-      "description": {
-        "moniker": "dirac",
-        "identity": "",
-        "website": "188.166.37.121",
-        "details": "testnode-9"
-      },
-      "key": {
-        "address": "darc1d22ccl8xpzzzldl28l9gs9htrgaatkaxjwskkl",
-        "coin_delegate": 100000000
-      }
-    },
-    {
-      "name": "testnode-10",
-      "ip": "188.166.68.78",
-      "index": 10,
-      "description": {
-        "moniker": "planck",
-        "identity": "",
-        "website": "188.166.68.78",
-        "details": "testnode-10"
-      },
-      "key": {
-        "address": "darc1x68e44c90hy49ppxqr2n0lawkv5w5vzp98uw4j",
-        "coin_delegate": 100000000
+        "coin_delegate": 100000000000
       }
     }
   ],
   "gen_accounts": [
     {
       "address": "darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx",
-      "coin_genesis": 300000000
+      "coin_genesis": 8400000000000
     },
     {
       "address": "darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc",
-      "coin_genesis": 200000000
+      "coin_genesis": 800000000000
     },
     {
       "address": "darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf",
-      "coin_genesis": 200000000
-    },
-    {
-      "address": "darc1f5sehz0tw7c357p0wqect8lu4728etp08jl55a",
-      "coin_genesis": 200000000
-    },
-    {
-      "address": "darc1z6u8hddknlp33z79rra7q4gjlw3thwqrdzyplq",
-      "coin_genesis": 175000000
-    },
-    {
-      "address": "darc1707wrvr797umhs7f8yqpa5v7g5hecdp3hafd0p",
-      "coin_genesis": 175000000
-    },
-    {
-      "address": "darc15gszq0w4leup59l3ewyv0d4ca8t6v9cyuqm2k6",
-      "coin_genesis": 150000000
-    },
-    {
-      "address": "darc1mte8eevm6a766l6gx2tjphcdetr2httsudaqmf",
-      "coin_genesis": 150000000
-    },
-    {
-      "address": "darc1d22ccl8xpzzzldl28l9gs9htrgaatkaxjwskkl",
-      "coin_genesis": 125000000
-    },
-    {
-      "address": "darc1x68e44c90hy49ppxqr2n0lawkv5w5vzp98uw4j",
-      "coin_genesis": 125000000
+      "coin_genesis": 800000000000
     }
   ]
 }

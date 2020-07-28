@@ -1,110 +1,42 @@
-echo 95.216.212.119;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-1/.konstellation root@95.216.212.119:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-1/.konstellationcli root@95.216.212.119:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.212.119 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 95.216.215.127;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-2/.konstellation root@95.216.215.127:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-2/.konstellationcli root@95.216.215.127:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.215.127 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 95.216.210.171;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-3/.konstellation root@95.216.210.171:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-3/.konstellationcli root@95.216.210.171:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.210.171 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 95.216.207.219;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-4/.konstellation root@95.216.207.219:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-4/.konstellationcli root@95.216.207.219:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@95.216.207.219 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 188.166.20.172;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-5/.konstellation root@188.166.20.172:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-5/.konstellationcli root@188.166.20.172:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.20.172 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 167.172.37.36;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-6/.konstellation root@167.172.37.36:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-6/.konstellationcli root@167.172.37.36:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.37.36 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 167.172.45.243;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-7/.konstellation root@167.172.45.243:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-7/.konstellationcli root@167.172.45.243:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.45.243 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 167.172.43.125;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-8/.konstellation root@167.172.43.125:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-8/.konstellationcli root@167.172.43.125:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@167.172.43.125 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 188.166.37.121;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-9/.konstellation root@188.166.37.121:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-9/.konstellationcli root@188.166.37.121:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.37.121 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
-echo 188.166.68.78;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "konstellation unsafe-reset-all";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "rm -rdf /root/.konstellation";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "rm -rdf /root/.konstellationcli";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "rm -rdf /root/.konstellationlcd";
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-10/.konstellation root@188.166.68.78:/root;
-     scp -i ~/Documents/.ssh/id_rsa.pub -r ./testnet/testnode-10/.konstellationcli root@188.166.68.78:/root;
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "screen -dmS kn konstellation start";
-     ssh -i ~/Documents/.ssh/id_rsa.pub root@188.166.68.78 "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
-     echo 
+#echo node1;
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "konstellation unsafe-reset-all";
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "sudo rm -rdf /root/.konstellation";
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "sudo rm -rdf /root/.konstellationcli";
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "sudo rm -rdf /root/.konstellationlcd";
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-1/.konstellation bldg@node1.konstellation.tech:/home/bldg;
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-1/.konstellationcli bldg@node1.konstellation.tech:/home/bldg;
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "screen -dmS kn konstellation start";
+#     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "screen -dmS klcd konstellationlcd rest-server --chain-id darchub --laddr tcp://0.0.0.0:1317";
+#     echo
+#echo node2;
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "konstellation unsafe-reset-all";
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "sudo rm -rdf /root/.konstellation";
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "sudo rm -rdf /root/.konstellationcli";
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "sudo rm -rdf /root/.konstellationlcd";
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-2/.konstellation bldg@node2.konstellation.tech:/home/bldg;
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-2/.konstellationcli bldg@node2.konstellation.tech:/home/bldg;
+#     ssh -i ~/.ssh/bldg bldg@node2.konstellation.tech "screen -dmS kn konstellation start";
+#     echo
+#echo node3;
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "konstellation unsafe-reset-all";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellation";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellationcli";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellationlcd";
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-3/.konstellation bldg@node3.konstellation.tech:/home/bldg;
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-3/.konstellationcli bldg@node3.konstellation.tech:/home/bldg;
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "screen -dmS kn konstellation start";
+#     echo
+
+echo goz;
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "konstellation unsafe-reset-all";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellation";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellationcli";
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "sudo rm -rdf /root/.konstellationlcd";
+#     scp -i ~/.ssh/bldg -r ./testnet/config bldg@goz.konstellation.tech:/home/bldg/.konstellation/;
+#     scp -i ~/.ssh/bldg -r ./testnet/testnode-3/.konstellationcli bldg@node3.konstellation.tech:/home/bldg;
+#     ssh -i ~/.ssh/bldg bldg@node3.konstellation.tech "screen -dmS kn konstellation start";
+#     echo
