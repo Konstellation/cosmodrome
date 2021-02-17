@@ -5,7 +5,6 @@ linters:
     - golint
     - ineffassign
     - unconvert
-    - misspell
     - govet
 linters-settings:
   gocyclo:

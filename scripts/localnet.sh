@@ -54,7 +54,7 @@ function run() {
         -e NODE_TYPE=PRIVATE_TESTNET \
         -v "$NODE_ROOT"/.konstellation:/root/.konstellation \
         -v "$NODE_ROOT"/.konstellationcli:/root/.konstellationcli \
-        konstellation:"$CHAIN_ID"
+        kirdb/konstellation:"$CHAIN_ID"
       echo "Done !"
     done
 }
