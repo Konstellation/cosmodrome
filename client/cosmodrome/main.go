@@ -42,7 +42,7 @@ func main() {
 	}
 	// CLI commands to initialize the chain
 	rootCmd.AddCommand(
-		cmd.GenNetCmd(ctx, cdc, app.ModuleBasics, app.GenesisUpdaters, staking.AppModuleBasic{}, genaccounts.AppModuleBasic{}),
+		cmd.GenNetCmd(ctx, cdc, app.ModuleBasics, app.GenesisUpdaters, genaccounts.AppModuleBasic{}),
 	)
 
 	// prepare and add flags

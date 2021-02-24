@@ -3,7 +3,7 @@ package types
 import (
 	"github.com/tendermint/tendermint/crypto"
 
-	"github.com/cosmos/cosmos-sdk/x/genaccounts"
+	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
 
 type NodeConfig struct {
@@ -42,7 +42,7 @@ type Validator struct {
 	Moniker     string
 	ID          string
 	GenFile     string
-	GenAccount  *genaccounts.GenesisAccount
+	GenAccount  *authTypes.GenesisAccount
 	Memo        string
 	Cors        string
 	ValPubKey   crypto.PubKey

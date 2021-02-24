@@ -18,15 +18,15 @@ import (
 	tmtime "github.com/tendermint/tendermint/types/time"
 
 	"github.com/cosmos/cosmos-sdk/client"
+	clkeys "github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/server"
 	srvconfig "github.com/cosmos/cosmos-sdk/server/config"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth"
-	"github.com/cosmos/cosmos-sdk/x/genaccounts"
+	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
-	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
@@ -56,10 +56,9 @@ var (
 
 func GenNetCmd(
 	ctx *server.Context,
-	cdc *codec.Codec,
+	cdc *codec.JSONMarshaler,
 	mbm module.BasicManager,
 	gus kntypes.GenesisUpdaters,
-	_ genutilcli.StakingMsgBuildingHelpers,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
 ) *cobra.Command {
 	cmd := &cobra.Command{
@@ -142,15 +141,15 @@ func parseNetConfig(netConfigFile string) (*types.NetConfig, error) {
 	return &netConfig, nil
 }
 
-func genAccounts(genaccs []*types.GenAccount) ([]*genaccounts.GenesisAccount, error) {
-	accs := make([]*genaccounts.GenesisAccount, 0)
+func genAccounts(genaccs []*types.GenAccount) ([]*authTypes.GenesisAccount, error) {
+	accs := make([]*authTypes.GenesisAccount, 0)
 	for _, ga := range genaccs {
 		addr, err := sdk.AccAddressFromBech32(ga.Address)
 		if err != nil {
 			return nil, err
 		}
 
-		genacc := &genaccounts.GenesisAccount{
+		genacc := authTypes.GenesisAccount{
 			Address: addr,
 			Coins: sdk.NewCoins(
 				sdk.NewCoin(kntypes.StakeDenom, sdk.NewInt(ga.CoinGenesis)),
@@ -191,7 +190,7 @@ func clientConfig(config *cfg.Config, configFile *srvconfig.Config, validators [
 func configValidator(config *cfg.Config, configFile *srvconfig.Config,
 	valInfo *types.ValidatorInfo,
 	key *types.Key,
-	genAccount *genaccounts.GenesisAccount,
+	genAccount *authTypes.GenesisAccount,
 ) (*types.Validator, error) {
 	nodeDir := filepath.Join(outDir, valInfo.Name, nodeDaemonHomeName)
 	cliDir := filepath.Join(outDir, valInfo.Name, nodeCliHomeName)
@@ -253,7 +252,7 @@ func configValidator(config *cfg.Config, configFile *srvconfig.Config,
 
 func configValidators(config *cfg.Config, configFile *srvconfig.Config,
 	keyStorage *types.KeyStorage,
-	genAccounts []*genaccounts.GenesisAccount,
+	genAccounts []*authTypes.GenesisAccount,
 	netConfig *types.NetConfig) (validators []*types.Validator, err error) {
 	if netConfig.GlobalConfig != nil {
 		if err := mapstructure.Decode(netConfig.GlobalConfig, config); err != nil {
@@ -272,7 +271,7 @@ func configValidators(config *cfg.Config, configFile *srvconfig.Config,
 			return nil, err
 		}
 
-		var genAccount *genaccounts.GenesisAccount
+		var genAccount *authTypes.GenesisAccount
 		for _, gacc := range genAccounts {
 			if gacc.Address.Equals(addr) {
 				genAccount = gacc
@@ -290,17 +289,17 @@ func configValidators(config *cfg.Config, configFile *srvconfig.Config,
 	return
 }
 
-func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus kntypes.GenesisUpdaters, validators []*types.Validator, accs []*genaccounts.GenesisAccount, config *cfg.Config) error {
-	appGenState := mbm.DefaultGenesis()
+func initGenFiles(cdc *codec.JSONMarshaler, mbm module.BasicManager, gus kntypes.GenesisUpdaters, validators []*types.Validator, accs []*authTypes.GenesisAccount, config *cfg.Config) error {
+	appGenState := mbm.DefaultGenesis(cdc)
 
-	appGenState[genaccounts.ModuleName] = cdc.MustMarshalJSON(accs)
+	appGenState[authTypes.ModuleName] = cdc.MustMarshalJSON(accs)
 
 	// Update default genesis
 	for _, gu := range gus {
-		gu.UpdateGenesis(cdc, appGenState)
+		gu.UpdateGenesis(*cdc, appGenState)
 	}
 
-	if err := mbm.ValidateGenesis(appGenState); err != nil {
+	if err := mbm.ValidateGenesis(cdc, appGenState); err != nil {
 		return fmt.Errorf("error validating genesis: %s", err.Error())
 	}
 
@@ -327,7 +326,7 @@ func initGenFiles(cdc *codec.Codec, mbm module.BasicManager, gus kntypes.Genesis
 }
 
 func genTxs(
-	cdc *codec.Codec,
+	cdc *codec.JSONMarshaler,
 	mbm module.BasicManager,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
 	validators []*types.Validator,
@@ -340,14 +339,14 @@ func genTxs(
 		}
 
 		var genesisState map[string]json.RawMessage
-		if err = cdc.UnmarshalJSON(genDoc.AppState, &genesisState); err != nil {
+		if err = &cdc.UnmarshalJSON(genDoc.AppState, &genesisState); err != nil {
 			return err
 		}
-		if err = mbm.ValidateGenesis(genesisState); err != nil {
+		if err = mbm.ValidateGenesis(*cdc, genesisState); err != nil {
 			return err
 		}
 
-		kb, err := client.NewKeyBaseFromDir(validator.NodeConfig.CliDir)
+		kb, err := clkeys.NewLegacyKeyBaseFromDir(validator.NodeConfig.CliDir)
 		if err != nil {
 			return err
 		}
@@ -406,7 +405,7 @@ func genTxs(
 }
 
 func collectGenFiles(
-	cdc *codec.Codec,
+	cdc *codec.JSONMarshaler,
 	config *cfg.Config,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
 	validators []*types.Validator,
@@ -447,7 +446,7 @@ func collectGenFiles(
 }
 
 func generateNetwork(ctx *server.Context,
-	cdc *codec.Codec,
+	cdc *codec.JSONMarshaler,
 	mbm module.BasicManager,
 	gus kntypes.GenesisUpdaters,
 	genAccIterator genutiltypes.GenesisAccountsIterator,
