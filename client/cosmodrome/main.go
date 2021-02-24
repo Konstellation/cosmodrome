@@ -11,7 +11,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"
-	"github.com/cosmos/cosmos-sdk/x/genaccounts"
+	"github.com/cosmos/cosmos-sdk/x/auth"
+	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 
 	"github.com/konstellation/cosmodrome/cmd"
@@ -42,7 +43,7 @@ func main() {
 	}
 	// CLI commands to initialize the chain
 	rootCmd.AddCommand(
-		cmd.GenNetCmd(ctx, cdc, app.ModuleBasics, app.GenesisUpdaters, genaccounts.AppModuleBasic{}),
+		cmd.GenNetCmd(ctx, cdc, app.ModuleBasics, app.GenesisUpdaters, banktypes.GenesisBalancesIterator{}),
 	)
 
 	// prepare and add flags
