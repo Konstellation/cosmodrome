@@ -17,7 +17,7 @@ import (
 	tmtypes "github.com/tendermint/tendermint/types"
 	tmtime "github.com/tendermint/tendermint/types/time"
 
-	"github.com/cosmos/cosmos-sdk/client"
+	clientFlags "github.com/cosmos/cosmos-sdk/client/flags"
 	clkeys "github.com/cosmos/cosmos-sdk/client/keys"
 	"github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -28,7 +28,7 @@ import (
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
-	"github.com/cosmos/cosmos-sdk/x/staking"
+	stakingTypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
 	common2 "github.com/konstellation/cosmodrome/common"
 	"github.com/konstellation/cosmodrome/types"
@@ -290,9 +290,9 @@ func configValidators(config *cfg.Config, configFile *srvconfig.Config,
 }
 
 func initGenFiles(cdc *codec.JSONMarshaler, mbm module.BasicManager, gus kntypes.GenesisUpdaters, validators []*types.Validator, accs []*authTypes.GenesisAccount, config *cfg.Config) error {
-	appGenState := mbm.DefaultGenesis(cdc)
+	appGenState := mbm.DefaultGenesis(*cdc)
 
-	appGenState[authTypes.ModuleName] = cdc.MustMarshalJSON(accs)
+	appGenState[authTypes.ModuleName] = (*cdc).MustMarshalJSON(accs)
 
 	// Update default genesis
 	for _, gu := range gus {
@@ -303,7 +303,7 @@ func initGenFiles(cdc *codec.JSONMarshaler, mbm module.BasicManager, gus kntypes
 		return fmt.Errorf("error validating genesis: %s", err.Error())
 	}
 
-	appState := cdc.MustMarshalJSON(appGenState)
+	appState := (*cdc).MustMarshalJSON(appGenState)
 
 	genDoc := &tmtypes.GenesisDoc{}
 	genDoc.ChainID = chainID
@@ -339,7 +339,7 @@ func genTxs(
 		}
 
 		var genesisState map[string]json.RawMessage
-		if err = &cdc.UnmarshalJSON(genDoc.AppState, &genesisState); err != nil {
+		if err = (*cdc).UnmarshalJSON(genDoc.AppState, &genesisState); err != nil {
 			return err
 		}
 		if err = mbm.ValidateGenesis(*cdc, genesisState); err != nil {
@@ -363,23 +363,27 @@ func genTxs(
 
 		c := sdk.NewCoin(kntypes.StakeDenom, sdk.NewInt(validator.Key.CoinDelegate))
 		coins := sdk.NewCoins(c)
-		if err := genutil.ValidateAccountInGenesis(genesisState, genAccIterator, key.GetAddress(), coins, cdc); err != nil {
+		if err := genutil.ValidateAccountInGenesis(genesisState, genAccIterator, key.GetAddress(), coins, *cdc); err != nil {
 			return err
 		}
 
-		msg := staking.NewMsgCreateValidator(
+		msg, err := stakingTypes.NewMsgCreateValidator(
 			sdk.ValAddress(validator.GenAccount.Address),
 			validator.ValPubKey,
 			c,
-			staking.NewDescription(
+			stakingTypes.NewDescription(
 				validator.Description.Moniker,
 				validator.Description.Identity,
 				validator.Description.Website,
+				validator.Description.SecurityContact,
 				validator.Description.Details,
 			),
-			staking.NewCommissionRates(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
+			stakingTypes.NewCommissionRates(sdk.ZeroDec(), sdk.ZeroDec(), sdk.ZeroDec()),
 			sdk.OneInt(),
 		)
+		if err != nil {
+			return err
+		}
 
 		tx := auth.NewStdTx([]sdk.Msg{msg}, auth.StdFee{}, []auth.StdSignature{}, validator.Memo)
 		txBldr := auth.NewTxBuilderFromCLI().WithChainID(chainID).WithMemo(validator.Memo).WithKeybase(kb)
@@ -389,7 +393,7 @@ func genTxs(
 			return err
 		}
 
-		txBytes, err := cdc.MarshalJSON(signedTx)
+		txBytes, err := (*cdc).MarshalJSON(signedTx)
 		if err != nil {
 			_ = os.RemoveAll(outDir)
 			return err
@@ -464,7 +468,7 @@ func generateNetwork(ctx *server.Context,
 	gentxsDir = filepath.Join(outDir, "gentxs")
 	configDir = filepath.Join(outDir)
 
-	chainID = viper.GetString(client.FlagChainID)
+	chainID = viper.GetString(clientFlags.FlagChainID)
 	if chainID == "" {
 		chainID = fmt.Sprintf("test-chain-%v", common.RandStr(6))
 	}
@@ -501,7 +505,7 @@ func generateNetwork(ctx *server.Context,
 		return err
 	}
 
-	if err := collectGenFiles(cdc, config, genaccounts.AppModuleBasic{}, validators); err != nil {
+	if err := collectGenFiles(cdc, config, auth.AppModuleBasic{}, validators); err != nil {
 		return err
 	}
 

@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/tendermint/tendermint/crypto"
+	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 
 	authTypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 )
@@ -17,6 +17,7 @@ type Description struct {
 	Identity string `json:"identity"`
 	Website  string `json:"website"`
 	Details  string `json:"details"`
+	SecurityContact  string `json:"security_contact"`
 }
 
 type ValidatorKey struct {
@@ -45,7 +46,7 @@ type Validator struct {
 	GenAccount  *authTypes.GenesisAccount
 	Memo        string
 	Cors        string
-	ValPubKey   crypto.PubKey
+	ValPubKey   cryptotypes.PubKey
 	IP          string
 	Key         ValidatorKey
 	Description Description
