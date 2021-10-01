@@ -101,6 +101,10 @@ Make sure you have the right version
 ```
 cd /root/konstellation
 source ./scripts/upgrade.sh
+# or run
+export DAEMON_NAME=knstld
+export DAEMON_HOME=$HOME/.knstld
+export DAEMON_RESTART_AFTER_UPGRADE=true
 ```
 ### Init cosmovisor folder
 ```
