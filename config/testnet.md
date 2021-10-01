@@ -105,7 +105,7 @@ source ./scripts/upgrade.sh
 ### Init cosmovisor folder
 ```
 mkdir -p $DAEMON_HOME/cosmovisor/genesis/bin
-cp ./build/simd $DAEMON_HOME/cosmovisor/genesis/bin
+cp ./build/knstld $DAEMON_HOME/cosmovisor/genesis/bin
 ```
 
 ### Move binary into cosmovisor folder
