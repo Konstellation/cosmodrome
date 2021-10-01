@@ -52,7 +52,7 @@ validators:
     ip: "node8.konstellation.tech"
     index: 3
     description:
-      moniker: "moniker"
+      moniker: "kopernik"
       identity: ""
       website: "https://node8.konstellation.tech:26657"
       details: "testnode-3"
