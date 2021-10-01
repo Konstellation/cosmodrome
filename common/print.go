@@ -2,11 +2,11 @@ package common
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
+	// "fmt"
+	// "os"
 
 	"github.com/cosmos/cosmos-sdk/codec"
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	// sdk "github.com/cosmos/cosmos-sdk/types"
 )
 
 type PrintInfo struct {
@@ -29,12 +29,13 @@ func NewPrintInfo(moniker, chainID, nodeID, genTxsDir string,
 	}
 }
 
-func DisplayInfo(cdc *codec.Codec, info PrintInfo) error {
-	out, err := codec.MarshalJSONIndent(cdc, info)
-	if err != nil {
-		return err
-	}
+func DisplayInfo(cdc *codec.JSONMarshaler, info PrintInfo) error {
+	// out, err := codec.MarshalInterface(info)
+	// if err != nil {
+	// 	return err
+	// }
 
-	_, err = fmt.Fprintf(os.Stderr, "%s\n", string(sdk.MustSortJSON(out)))
-	return err
+	// _, err = fmt.Fprintf(os.Stderr, "%s\n", string(sdk.MustSortJSON(out)))
+	// return err
+	return nil
 }
