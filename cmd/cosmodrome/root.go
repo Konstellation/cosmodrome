@@ -61,6 +61,7 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig cosmoscmd.EncodingConfig
 
 	rootCmd.AddCommand(
 		GenNetCmd(app.ModuleBasics, banktypes.GenesisBalancesIterator{}),
+		version.NewVersionCommand(),
 	)
 }
 
