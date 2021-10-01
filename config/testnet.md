@@ -69,3 +69,53 @@ As far as blockchain requires 2/3 nodes to support consensus,
 first nodes will wait for the 2/3+1 node to start blockchain.
 
 Assuming that you have 3 nodes in total, first 2 will wait for the third one. And after that consensus will initiated
+
+
+# How to setup node on the server
+## 1. Prerequisites
+```
+snap install go --classic
+go install github.com/cosmos/cosmos-sdk/cosmovisor/cmd/cosmovisor@v0.1.0
+
+```
+
+## 2. Clone konstellation repo
+```
+cd /root
+git clone https://github.com/konstellation/konstellation
+git checkout v0.4.1
+```
+
+## 3. Build binary from src
+```
+make build
+```
+Make sure you have the right version
+```
+./build/knstld version
+```
+
+## 4. Cosmovisor
+
+### Set env variables
+```
+cd /root/konstellation
+source ./scripts/upgrade.sh
+```
+### Init cosmovisor folder
+```
+mkdir -p $DAEMON_HOME/cosmovisor/genesis/bin
+cp ./build/simd $DAEMON_HOME/cosmovisor/genesis/bin
+```
+
+### Move binary into cosmovisor folder
+```
+mv /root/konstellation/build/knstld ~/.knstld/cosmovisor/genesis/bin
+```
+
+### Run konstellation daemon
+```
+cosmovisor start
+```
+
+If you have troubles with running cosmovisor, see [Chain Upgrade Guide to v0.44](https://docs.cosmos.network/master/migrations/chain-upgrade-guide-044.html) for more info
