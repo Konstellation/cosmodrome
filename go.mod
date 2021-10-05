@@ -6,7 +6,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.42.6
 	github.com/goccy/go-yaml v1.9.2
 	github.com/imdario/mergo v0.3.11
-	github.com/konstellation/konstellation v0.4.1
+	github.com/konstellation/konstellation v0.4.2
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/pelletier/go-toml v1.8.1
 	github.com/rs/zerolog v1.21.0

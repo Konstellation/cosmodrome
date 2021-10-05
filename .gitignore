@@ -14,6 +14,8 @@ testnet
 localnet
 
 config/keys.json
+config/mainnet.yml
+config/keys_mainnet.json
 
 # IDE
 .idea/
