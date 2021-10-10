@@ -16,6 +16,7 @@ localnet
 config/keys.json
 config/mainnet.yml
 config/keys_mainnet.json
+config/mainnet.json
 
 # IDE
 .idea/

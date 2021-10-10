@@ -452,7 +452,7 @@ func genTxs(
 			sdk.ValAddress(validator.Key.AccAddr),
 			validator.ValPubKey,
 			sdk.NewCoin(_const.StakeDenom, sdk.TokensFromConsensusPower(validator.Key.CoinDelegate)),
-			stakingtypes.NewDescription(validator.ValNodeConfig.DaemonDir, "", "", "", ""),
+			stakingtypes.NewDescription(validator.Moniker, "", "", "", ""),
 			stakingtypes.NewCommissionRates(sdk.OneDec(), sdk.OneDec(), sdk.OneDec()),
 			sdk.OneInt(),
 		)

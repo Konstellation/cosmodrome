@@ -20,7 +20,7 @@ function create() {
     sudo rm -rdf testnet
   fi
 
-  cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/testnet.json -o ./testnet
+  cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/testnet.yml -o ./testnet
 }
 
 function deploy() {
