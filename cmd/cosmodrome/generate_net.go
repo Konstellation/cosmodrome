@@ -453,7 +453,7 @@ func genTxs(
 			validator.ValPubKey,
 			sdk.NewCoin(_const.StakeDenom, sdk.TokensFromConsensusPower(validator.Key.CoinDelegate)),
 			stakingtypes.NewDescription(validator.Moniker, "", "", "", ""),
-			stakingtypes.NewCommissionRates(sdk.OneDec(), sdk.OneDec(), sdk.OneDec()),
+			stakingtypes.NewCommissionRates(sdk.NewDecWithPrec(1, 1), sdk.NewDecWithPrec(2, 1), sdk.NewDecWithPrec(1, 2)),
 			sdk.OneInt(),
 		)
 		if err != nil {

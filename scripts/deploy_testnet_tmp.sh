@@ -1,3 +1,31 @@
+
+jq -r '
+    .validators[] |
+    "echo \(.ip);
+     ssh -i ~/.ssh/bldg bldg@\(.ip) \"rm -rdf /root/.knstld\";
+     scp -i ~/.ssh/bldg -r ./testnet/\(.name)/.knstld root@\(.ip):/root;
+     echo "
+    ' ./config/testnet.json
+echo node6.konstellation.tech;
+     ssh -i ~/.ssh/bldg bldg@node6.konstellation.tech "sudo rm -rdf /root/.knstld";
+     scp -i ~/.ssh/bldg -r ./testnet/testnode-1/.knstld bldg@node6.konstellation.tech:/home/bldg;
+     echo
+echo node7.konstellation.tech;
+     ssh -i ~/.ssh/bldg bldg@node7.konstellation.tech "sudo rm -rdf /root/.knstld";
+     scp -i ~/.ssh/bldg -r ./testnet/testnode-2/.knstld bldg@node7.konstellation.tech:/home/bldg;
+     echo
+echo node8.konstellation.tech;
+     ssh -i ~/.ssh/bldg bldg@node8.konstellation.tech "sudo rm -rdf /root/.knstld";
+     scp -i ~/.ssh/bldg -r ./testnet/testnode-3/.knstld bldg@node8.konstellation.tech:/home/bldg;
+     echo
+
+     ssh dglee@node6.konstellation.tech "sudo rm -rdf /root/.knstld";
+     ssh dglee@node7.konstellation.tech "sudo rm -rdf /root/.knstld";
+     ssh dglee@node8.konstellation.tech "sudo rm -rdf /root/.knstld";
+     scp -r ./testnet/testnode-1/.knstld dglee@node6.konstellation.tech:/root;
+     scp -r ./testnet/testnode-2/.knstld dglee@node7.konstellation.tech:/root;
+     scp -r ./testnet/testnode-3/.knstld dglee@node8.konstellation.tech:/root;
+
 #echo node1;
 #     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "ps ax | grep konstellation | awk '{print \$1}' | xargs kill";
 #     ssh -i ~/.ssh/bldg bldg@node1.konstellation.tech "konstellation unsafe-reset-all";
