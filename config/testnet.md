@@ -121,7 +121,7 @@ mv /root/konstellation/build/knstld ~/.knstld/cosmovisor/genesis/bin
 ```
 cosmovisor start
 # to run process in background run
-screen -dmS cosmovisor cosmovisor start
+screen -dmSL cosmovisor cosmovisor start
 ```
 
 If you have troubles with running cosmovisor, see [Chain Upgrade Guide to v0.44](https://docs.cosmos.network/master/migrations/chain-upgrade-guide-044.html) for more info
