@@ -3,7 +3,7 @@ version: '2'
 services:
   konstellation_node_1_full_node:
     container_name: testnode-1
-    image: kirdb/knstld:0.2.0
+    image: knstld:latest
     environment:
       - CHAIN_ID=darchub
 #    ports:
@@ -13,11 +13,11 @@ services:
     entrypoint: /opt/run.sh
     networks:
       localnet:
-        ipv4_address: 172.18.0.2
+        ipv4_address: 172.16.1.2
 
   konstellation_node_2_full_node:
     container_name: testnode-2
-    image: kirdb/knstld:0.2.0
+    image: knstld:latest
     environment:
      - CHAIN_ID=darchub
 #    ports:
@@ -27,11 +27,11 @@ services:
     entrypoint: /opt/run.sh
     networks:
       localnet:
-        ipv4_address: 172.18.0.3
+        ipv4_address: 172.16.1.3
 
   konstellation_node_3_full_node:
     container_name: testnode-3
-    image: kirdb/knstld:0.2.0
+    image: knstld:latest
     environment:
       - CHAIN_ID=darchub
 #    ports:
@@ -41,11 +41,11 @@ services:
     entrypoint: /opt/run.sh
     networks:
       localnet:
-        ipv4_address: 172.18.0.4
+        ipv4_address: 172.16.1.4
 
   konstellation_node_host:
     container_name: host
-    image: kirdb/knstld:0.2.0
+    image: knstld:latest
     environment:
       - CHAIN_ID=darchub
     ports:
@@ -57,7 +57,7 @@ services:
     entrypoint: /opt/run.sh
     networks:
       localnet:
-        ipv4_address: 172.18.0.5
+        ipv4_address: 172.16.1.5
 
 #  konstellation_node_5_seed:
 #    container_name: konstellation-node-5-seed
@@ -84,5 +84,5 @@ networks:
     ipam:
       driver: default
       config:
-      - subnet: 172.18.0.0/16
-        gateway: 172.18.0.1
+      - subnet: 172.16.1.0/24
+        gateway: 172.16.1.1

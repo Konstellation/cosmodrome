@@ -21,14 +21,15 @@ function usage() {
 function create() {
   # Create a network for connections between nodes
   if [[ "" == "$(docker network ls | grep ${DOCKER_NETWORK})" ]]; then
-    docker network create ${DOCKER_NETWORK}
+    docker network create --gateway 172.16.1.1 --subnet 172.16.1.0/24 ${DOCKER_NETWORK} 
+    #docker network create ${DOCKER_NETWORK} 
   fi
 
   if [[ -d "localnet" ]]; then
     sudo rm -rdf localnet
   fi
 
-  cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/localnet.json -o ./localnet
+  cosmodrome gn --chain-id "$CHAIN_ID" -n ./config/localnet.yml -o ./localnet --keyring-backend test
 }
 
 function run() {
@@ -52,9 +53,8 @@ function run() {
         -e CHAIN_ID="$CHAIN_ID" \
         -e MONIKER="$NODE_NAME" \
         -e NODE_TYPE=PRIVATE_TESTNET \
-        -v "$NODE_ROOT"/.konstellation:/root/.konstellation \
-        -v "$NODE_ROOT"/.konstellationcli:/root/.konstellationcli \
-        konstellation:"$CHAIN_ID"
+        -v "$NODE_ROOT"/.knstld:/root/.knstld \
+        knstld:latest /opt/run.sh
       echo "Done !"
     done
 }
@@ -96,13 +96,13 @@ function rm() {
 }
 
 function copy() {
-  if [ ! -d $HOME/.konstellation ]; then
+  if [ ! -d $HOME/.knstld ]; then
     echo "Konstellation config dir does not exist"
     echo "Run konstellation init and then run this script again"
     exit
   fi
 
-  cp -r ./localnet/config/* $HOME/.konstellation/config/
+  cp -r ./localnet/config/* $HOME/.knstld/config/
 }
 
 if [[ -z ${COMMAND} ]]; then

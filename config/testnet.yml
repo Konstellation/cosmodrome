@@ -1,4 +1,4 @@
-type: "testnet"
+type: "mainnet"
 config:
   consensus:
     timeout_commit: 5000000000
@@ -8,24 +8,26 @@ config:
     index_tags: ""
     index_all_tags: true
 accounts:
-  - address: darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx
-    coins: [ "300000000000000udarc" ]
-  - address: darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc
-    coins: [ "200000000000000udarc" ]
-  - address: darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf
-    coins: [ "200000000000000udarc" ]
+  - address: darc16n226c7p4fkmrgxjsclln38qthulggmr5xkkug
+    coins: [ "3000001000000udarc" ]
+  - address: darc1sehh6z74x04y0rzmfhn0gw7z9jl7c3a99ns0p0
+    coins: [ "3000001000000udarc" ]
+  - address: darc16cmu7rvtzrxqxtv84z6u9qgl2272fak8xxaexr
+    coins: [ "3000001000000udarc" ]
+  - address: darc1zhdr6rulr45vmve6k4nq400yzwca549c4cvmpk
+    coins: [ "3000001000000udarc" ]
 validators:
   - name: "testnode-1"
     ip: "node6.konstellation.tech"
     index: 1
     description:
-      moniker: "hawking"
+      moniker: "node1"
       identity: ""
       website: "https://node6.konstellation.tech:26657"
-      details: "testnode-1"
+      details: "mainnode-1"
     key:
-      address: darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx
-      coin_delegate: 100000000
+      address: darc16n226c7p4fkmrgxjsclln38qthulggmr5xkkug
+      coin_delegate: 1000000
     config:
       rpc:
         cors_allowed_origins:
@@ -36,13 +38,13 @@ validators:
     ip: "node7.konstellation.tech"
     index: 2
     description:
-      moniker: "heisenberg"
+      moniker: "node2"
       identity: ""
       website: "https://node7.konstellation.tech:26657"
-      details: "testnode-2"
+      details: "mainnode-2"
     key:
-      address: darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc
-      coin_delegate: 100000000
+      address: darc1sehh6z74x04y0rzmfhn0gw7z9jl7c3a99ns0p0
+      coin_delegate: 1000000
     config:
       rpc:
         cors_allowed_origins:
@@ -52,13 +54,29 @@ validators:
     ip: "node8.konstellation.tech"
     index: 3
     description:
-      moniker: "kopernik"
+      moniker: "node3"
       identity: ""
       website: "https://node8.konstellation.tech:26657"
-      details: "testnode-3"
+      details: "mainnode-3"
     key:
-      address: darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf
-      coin_delegate: 100000000
+      address: darc16cmu7rvtzrxqxtv84z6u9qgl2272fak8xxaexr
+      coin_delegate: 1000000
+    config:
+      rpc:
+        cors_allowed_origins:
+          - "*"
+        laddr: "tcp://0.0.0.0:26657"
+  - name: "testnode-4"
+    ip: "206.81.29.202"
+    index: 4
+    description:
+      moniker: "node4"
+      identity: ""
+      website: "https://206.81.29.202:26657"
+      details: "mainnode-4"
+    key:
+      address: darc1zhdr6rulr45vmve6k4nq400yzwca549c4cvmpk
+      coin_delegate: 1000000
     config:
       rpc:
         cors_allowed_origins:
@@ -85,7 +103,7 @@ genesis:
         denom: "udarc"
     oracle:
       allowed_addresses:
-        - address: "darc1n8lpdv72n4vr90e8drj8903vmrafafmgcelfpx"
+        - address: "darc1zar995wlx4x5dlevp6rkk26s9r2n2uswwdchft"
 #    issue:
 #      tokens:
 #        - owner: "darc1n8lpdv72n4vr90e8drj8903vmrafafmgcelfpx"

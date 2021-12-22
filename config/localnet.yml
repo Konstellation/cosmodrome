@@ -8,23 +8,23 @@ config:
     index_tags: ""
     index_all_tags: true
 accounts:
-  - address: darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx
+  - address: darc10v74707r0n7khgn5sftmdd3lfwcgjl9kpfxtxw
     coins: [ "300000000000000udarc" ]
-  - address: darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc
+  - address: darc1tal4c2mgpw3zv5lpyskv86v8y3hrxa3wp2frft
     coins: [ "200000000000000udarc" ]
-  - address: darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf
+  - address: darc1nq2neh6pp0t35w7sd8lyrnu59mywhf25fzue3n
     coins: [ "200000000000000udarc" ]
 validators:
   - name: "testnode-1"
-    ip: "172.18.0.2"
+    ip: "172.16.1.2"
     index: 1
     description:
       moniker: "testnode-1"
       identity: ""
-      website: "http://172.18.0.2:26657"
+      website: "http://172.16.1.2:26657"
       details: "testnode-1"
     key:
-      address: darc1rzdt9wrzwv3x7vv6f7xpyaqqgf3lt6phptqtsx
+      address: darc10v74707r0n7khgn5sftmdd3lfwcgjl9kpfxtxw
       coin_delegate: 100000000
     config:
       rpc:
@@ -33,15 +33,15 @@ validators:
         laddr: "tcp://0.0.0.0:26657"
       faucet: true
   - name: "testnode-2"
-    ip: "172.18.0.3"
+    ip: "172.16.1.3"
     index: 2
     description:
       moniker: "testnode-2"
       identity: ""
-      website: "http://172.18.0.3:26657"
+      website: "http://172.16.1.3:26657"
       details: "testnode-2"
     key:
-      address: darc1ejgxhtvj6c9n7d7g29jmsxhnn6wh2j8rll0vfc
+      address: darc1tal4c2mgpw3zv5lpyskv86v8y3hrxa3wp2frft
       coin_delegate: 100000000
     config:
       rpc:
@@ -49,15 +49,15 @@ validators:
           - "*"
         laddr: "tcp://0.0.0.0:26657"
   - name: "testnode-3"
-    ip: "172.18.0.4"
+    ip: "172.16.1.4"
     index: 3
     description:
       moniker: "testnode-3"
       identity: ""
-      website: "http://172.18.0.4:26657"
+      website: "http://172.16.1.4:26657"
       details: "testnode-3"
     key:
-      address: darc15h6uhzufhe0d0avuk54zcqw0t66qefeyc3vttf
+      address: darc1nq2neh6pp0t35w7sd8lyrnu59mywhf25fzue3n
       coin_delegate: 100000000
     config:
       rpc:
@@ -85,7 +85,7 @@ genesis:
         denom: "udarc"
     oracle:
       allowed_addresses:
-        - address: "darc1n8lpdv72n4vr90e8drj8903vmrafafmgcelfpx"
+        - address: "darc1hm0ahdz4p3aqugxucgcklsj9lzr437qdgw7wef"
 #    issue:
 #      tokens:
 #        - owner: "darc1n8lpdv72n4vr90e8drj8903vmrafafmgcelfpx"
