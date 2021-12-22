@@ -22,6 +22,17 @@ Run in shell from project dir
 ./scripts/localnet.sh rm
 ```
 
+#### With docker-compose
+```shell script
+./scripts/localnet.sh create
+
+./scripts/localnet.sh copy
+
+Update moniker in `~/.knstld/config/config.toml`
+
+docker-compose up
+```
+
 ## Testnet
 Run in shell from project dir
 #### Create testnet
