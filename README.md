@@ -2,7 +2,19 @@
 
 ## Localnet
 
-Run in shell from project dir
+Build konstellation docker image
+```shell script
+# Clone Konstellation from the latest release found here: https://github.com/konstellation/konstellation/releases
+git clone -b <latest_release> https://github.com/konstellation/konstellation
+# Enter the folder Konstellation was cloned into
+cd konstellation
+# Change git release branch to `master`
+git checkout master
+# build docker image
+docker build -t knstld:latest .
+```
+
+Run in shell from cosmodrome project dir
 #### Create localnet
 ```shell script
 ./scripts/localnet.sh create
